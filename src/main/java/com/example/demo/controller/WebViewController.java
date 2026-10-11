@@ -8,7 +8,7 @@ public class WebViewController {
 
     @GetMapping("/")
     public String index() {
-        return "trang-chu";
+        return "index";
     }
 
     @GetMapping("/staff")
