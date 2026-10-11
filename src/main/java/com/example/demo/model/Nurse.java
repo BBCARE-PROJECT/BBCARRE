@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "nurses")
 public class Nurse {
@@ -34,6 +36,9 @@ public class Nurse {
 
     @Column(length = 30)
     private String status; // Trạng thái: 'ACTIVE' (đang làm việc), 'OFF' (nghỉ phép)
+
+    @OneToMany(mappedBy = "nurse", cascade = CascadeType.ALL)
+    private List<Appointment> AppoinmentList;
 
     public Nurse() {
     }
@@ -81,4 +86,12 @@ public class Nurse {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public List<Appointment> getAppoinmentList() {
+        return AppoinmentList;
+    }
+
+    public void setAppoinmentList(List<Appointment> appoinmentList) {
+        AppoinmentList = appoinmentList;
+    }
 }
