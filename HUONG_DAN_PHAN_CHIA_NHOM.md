@@ -1,7 +1,7 @@
 # 🏥 TÀI LIỆU HƯỚNG DẪN HỌP NHÓM & PHÂN CHIA CÔNG VIỆC DỰ ÁN BBCARE
 
 > **Dự án:** BBCare Homecare - Nền Tảng Chăm Sóc Sức Khỏe & Quản Lý Ca Trực Tại Nhà  
-> **Repository GitHub:** [https://github.com/bao2006dna-oss/BBCARE](https://github.com/bao2006dna-oss/BBCARE)  
+> **Repository GitHub:** [https://github.com/BBCARE-PROJECT/BBCARRE](https://github.com/BBCARE-PROJECT/BBCARRE)  
 > **Tech Stack:** Spring Boot 3.3.4 (JDK 21) • Microsoft SQL Server • Spring Data JPA • Thymeleaf • Vanilla CSS/JS  
 
 ---
@@ -37,8 +37,8 @@ sequenceDiagram
 
 ### 1. Kéo code mới nhất về máy:
 ```bash
-git clone https://github.com/bao2006dna-oss/BBCARE.git
-cd BBCARE
+git clone https://github.com/BBCARE-PROJECT/BBCARRE.git
+cd BBCARRE
 git checkout main
 git pull origin main
 ```
