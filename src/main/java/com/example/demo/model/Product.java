@@ -7,75 +7,118 @@ import jakarta.persistence.*;
 public class Product {
 
     @Id
-    @Column(length = 50)
-    private String id; // Mã sản phẩm: 'p_oxy_machine', 'p_wheelchair', 'p_cpap'...
+    @Column(name = "id", length = 50, nullable = false)
+    private String id; // vd: 'p_oxy_5l'
 
-    @Column(nullable = false, length = 150)
-    private String name; // Tên: Máy Tạo Oxy (5L / 10L), Xe Lăn Y Tế Đa Năng...
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(length = 50)
-    private String category; // Phân loại: 'RENTAL' (Cho thuê), 'SALE' (Bán đứt), 'SUPPLEMENT' (Thuốc & TPCN)
+    @Column(name = "category", length = 50, nullable = false)
+    private String category; // 'RENTAL', 'SALE', 'SUPPLEMENT'
 
-    private Double buyPrice; // Giá bán mua đứt (vd: 12.500.000đ)
+    @Column(name = "buy_price")
+    private Double buyPrice;
 
-    private Double rentPrice; // Giá thuê theo ngày/tháng (vd: 350.000đ/ngày)
+    @Column(name = "rent_price_per_day")
+    private Double rentPricePerDay;
 
-    private Double depositPrice; // Tiền đặt cọc bảo chứng khi thuê (vd: 3.000.000đ)
+    @Column(name = "deposit_price")
+    private Double depositPrice;
 
-    @Column(length = 500)
-    private String imageUrl; // Link ảnh sản phẩm (Unsplash online hoặc /uploads/...)
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
 
-    private Integer stockQuantity; // Số lượng máy móc/sản phẩm còn trong kho
+    @Column(name = "stock_quantity", nullable = false)
+    private Integer stockQuantity;
 
-    @Column(length = 30)
-    private String status; // 'AVAILABLE' (Còn hàng), 'OUT_OF_STOCK' (Hết hàng)
-
-    @Column(length = 500)
-    private String description; // Mô tả vắn tắt tính năng y tế của thiết bị
+    @Column(name = "status", length = 50, nullable = false)
+    private String status; // 'AVAILABLE', 'OUT_OF_STOCK'
 
     public Product() {
     }
 
-    public Product(String id, String name, String category, Double buyPrice, Double rentPrice, Double depositPrice, String imageUrl, Integer stockQuantity, String status) {
+    public Product(String id, String name, String category, Double buyPrice, Double rentPricePerDay,
+                   Double depositPrice, String imageUrl, Integer stockQuantity, String status) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.buyPrice = buyPrice;
-        this.rentPrice = rentPrice;
+        this.rentPricePerDay = rentPricePerDay;
         this.depositPrice = depositPrice;
         this.imageUrl = imageUrl;
         this.stockQuantity = stockQuantity;
         this.status = status;
     }
 
-    // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public String getName() {
+        return name;
+    }
 
-    public Double getBuyPrice() { return buyPrice; }
-    public void setBuyPrice(Double buyPrice) { this.buyPrice = buyPrice; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public Double getRentPrice() { return rentPrice; }
-    public void setRentPrice(Double rentPrice) { this.rentPrice = rentPrice; }
+    public String getCategory() {
+        return category;
+    }
 
-    public Double getDepositPrice() { return depositPrice; }
-    public void setDepositPrice(Double depositPrice) { this.depositPrice = depositPrice; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public Double getBuyPrice() {
+        return buyPrice;
+    }
 
-    public Integer getStockQuantity() { return stockQuantity; }
-    public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public Double getRentPricePerDay() {
+        return rentPricePerDay;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setRentPricePerDay(Double rentPricePerDay) {
+        this.rentPricePerDay = rentPricePerDay;
+    }
+
+    public Double getDepositPrice() {
+        return depositPrice;
+    }
+
+    public void setDepositPrice(Double depositPrice) {
+        this.depositPrice = depositPrice;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

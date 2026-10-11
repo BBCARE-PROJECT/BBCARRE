@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,55 +11,83 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Nhiều món hàng thuộc về một đơn hàng
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order order;
 
-    // Nhiều món hàng tham chiếu tới một sản phẩm
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    private Integer quantity; // Số lượng đặt
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    private Integer rentDays; // Số ngày thuê (null nếu là mua đứt)
+    @Column(name = "rent_days")
+    private Integer rentDays; // null nếu mua đứt
 
-    private Double price; // Đơn giá tại thời điểm đặt (giá mua hoặc giá thuê/ngày)
+    @Column(name = "price", nullable = false)
+    private Double price; // Giá bán hoặc giá thuê/ngày tại thời điểm đặt
 
-    private Double depositPrice; // Tiền cọc tương ứng của món đồ (nếu là thuê)
+    @Column(name = "deposit_price")
+    private Double depositPrice; // Tiền cọc/máy tại thời điểm đặt
 
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, Integer quantity, Integer rentDays, Double price, Double depositPrice) {
-        this.order = order;
-        this.product = product;
-        this.quantity = quantity;
-        this.rentDays = rentDays;
-        this.price = price;
-        this.depositPrice = depositPrice;
+    public Long getId() {
+        return id;
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Order getOrder() { return order; }
-    public void setOrder(Order order) { this.order = order; }
+    public Order getOrder() {
+        return order;
+    }
 
-    public Product getProduct() { return product; }
-    public void setProduct(Product product) { this.product = product; }
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
-    public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    public Product getProduct() {
+        return product;
+    }
 
-    public Integer getRentDays() { return rentDays; }
-    public void setRentDays(Integer rentDays) { this.rentDays = rentDays; }
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
+    public Integer getQuantity() {
+        return quantity;
+    }
 
-    public Double getDepositPrice() { return depositPrice; }
-    public void setDepositPrice(Double depositPrice) { this.depositPrice = depositPrice; }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getRentDays() {
+        return rentDays;
+    }
+
+    public void setRentDays(Integer rentDays) {
+        this.rentDays = rentDays;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getDepositPrice() {
+        return depositPrice;
+    }
+
+    public void setDepositPrice(Double depositPrice) {
+        this.depositPrice = depositPrice;
+    }
 }
