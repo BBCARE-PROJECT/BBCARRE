@@ -3,7 +3,6 @@
    Dành cho dự án Spring Boot + Thymeleaf
    ========================================================================== */
 
-@import url('../portal.css');
 
 /* Tùy biến phong cách riêng cho Điều Dưỡng (Tone màu Xanh Ngọc Y Tế & Trắng) */
 .role-badge-nurse {
