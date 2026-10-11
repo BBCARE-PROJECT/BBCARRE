@@ -38,6 +38,19 @@ public class AppointmentApiController {
         ));
     }
 
+    // Lấy chi tiết lịch hẹn theo Mã ca (vd: '#BK-8821')
+    @GetMapping("/code/{code}")
+    public ResponseEntity<?> getAppointmentByCode(@PathVariable String code) {
+        Optional<Appointment> aptOpt = appointmentService.getAppointmentByCode(code);
+        if (aptOpt.isPresent()) {
+            return ResponseEntity.ok(aptOpt.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "status", "error",
+                "message", "Không tìm thấy ca hẹn với mã: " + code
+        ));
+    }
+
     // Lấy lịch hẹn theo ngày
     @GetMapping("/by-date")
     public List<Appointment> getAppointmentsByDate(@RequestParam String date) {
