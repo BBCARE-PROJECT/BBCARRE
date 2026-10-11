@@ -249,4 +249,26 @@ public class AppointmentApiController {
             ));
         }
     }
+
+    // Xóa ca hẹn
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAppointment(@PathVariable Long id) {
+        try {
+            appointmentService.deleteAppointment(id);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Đã xóa ca hẹn ID: " + id + " thành công!"
+            ));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Đã xảy ra lỗi khi xóa ca: " + e.getMessage()
+            ));
+        }
+    }
 }
