@@ -71,6 +71,23 @@ public class AppointmentApiController {
         return ResponseEntity.ok(appointmentService.getAppointmentsByPatientPhone(phone));
     }
 
+    // Kiểm tra Điều dưỡng có bị trùng ca hay không (Dùng cho Modal phân công realtime)
+    @GetMapping("/check-conflict")
+    public ResponseEntity<?> checkConflict(
+            @RequestParam String nurseId,
+            @RequestParam String date,
+            @RequestParam String slot,
+            @RequestParam(required = false) Long excludeId) {
+        boolean busy = appointmentService.isNurseBusyExcludingAppointment(nurseId, date, slot, excludeId);
+        return ResponseEntity.ok(Map.of(
+                "nurseId", nurseId,
+                "date", date,
+                "slot", slot,
+                "isBusy", busy,
+                "available", !busy
+        ));
+    }
+
     // API Phân công / Điều phối ca hẹn (Được gọi khi bấm "Xác Nhận & Đồng Bộ Lịch" trên staff.html)
     @PostMapping("/{id}/assign")
     public ResponseEntity<?> assignAppointment(
