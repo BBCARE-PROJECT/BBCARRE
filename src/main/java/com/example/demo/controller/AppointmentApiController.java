@@ -3,11 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.model.Appointment;
 import com.example.demo.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -21,6 +23,19 @@ public class AppointmentApiController {
     @GetMapping
     public List<Appointment> getAllAppointments() {
         return appointmentService.getAllAppointments();
+    }
+
+    // Lấy chi tiết lịch hẹn theo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAppointmentById(@PathVariable Long id) {
+        Optional<Appointment> aptOpt = appointmentService.getAppointmentById(id);
+        if (aptOpt.isPresent()) {
+            return ResponseEntity.ok(aptOpt.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "status", "error",
+                "message", "Không tìm thấy ca hẹn với ID: " + id
+        ));
     }
 
     // Lấy lịch hẹn theo ngày
