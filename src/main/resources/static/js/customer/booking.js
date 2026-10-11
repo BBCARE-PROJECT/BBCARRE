@@ -1130,6 +1130,45 @@ function submitBooking(){
     if (typeof saveStoredAppointments === 'function') {
       saveStoredAppointments();
     }
+
+    // 🚀 FETCH API: Gửi thông tin đặt ca lên Backend Spring Boot lưu vào Database SQL Server
+    const bookingPayload = {
+      patientName: B.patientName || B.name || 'Nguyễn Văn An',
+      patientPhone: B.phone || '',
+      patientAddress: B.addr || '',
+      serviceName: serviceNames + (calc.totalDays > 1 ? ` (Gói ${calc.totalDays} ngày)` : ''),
+      appointmentDate: B.dateStr || new Date().toISOString().slice(0, 10),
+      timeSlot: shiftDuration,
+      notes: B.medicalHistory || '',
+      price: calc.finalTotal || 0,
+      nurse: (B.nurseId && B.nurseId !== 'none') ? { id: B.nurseId } : null
+    };
+
+    fetch('/api/appointments/book', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bookingPayload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success' && data.appointment) {
+        console.log('>> [Backend API] Đã lưu ca hẹn vào Database SQL Server thành công:', data.appointment);
+        if (data.appointment.code) {
+          B.code = data.appointment.code;
+          newAppt.code = data.appointment.code;
+          const codeEl = document.querySelector('.wz-step5-box .code, .wz-success-card .code, .step-5 .code');
+          if (codeEl) codeEl.textContent = `Mã đơn: ${data.appointment.code}`;
+        }
+        if (typeof saveStoredAppointments === 'function') {
+          saveStoredAppointments();
+        }
+      }
+    })
+    .catch(err => {
+      console.warn('>> [Fetch API Warning] Không thể kết nối API /api/appointments/book (Đang dùng offline):', err);
+    });
   }
 
   goStep(5);
