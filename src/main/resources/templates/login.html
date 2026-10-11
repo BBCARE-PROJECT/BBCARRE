@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng Nhập Hệ Thống - BBCare Homecare</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+<div class="login-page-container">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="fa-solid fa-shield-heart"></i> HỆ THỐNG BBCARE HOMECARE</h3>
+      <a href="index.html" class="close-btn" title="Quay về trang chủ">✕</a>
+    </div>
+    
+    <div class="auth-tab-box">
+      <div id="tabLoginBtn" class="auth-tab active" onclick="switchAuthTab('login')">ĐĂNG NHẬP</div>
+      <div id="tabRegisterBtn" class="auth-tab" onclick="switchAuthTab('register')">ĐĂNG KÝ MỚI</div>
+    </div>
+    
+    <!-- FORM ĐĂNG NHẬP -->
+    <form id="loginForm" onsubmit="handleAuthSubmit(event,'login')">
+      <div class="form-group">
+        <label>Email hoặc Số điện thoại *</label>
+        <input type="text" id="loginUsername" class="form-control" placeholder="Nhập Email hoặc SĐT..." required>
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu *</label>
+        <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-card" style="margin-top:10px">ĐĂNG NHẬP HỆ THỐNG</button>
+
+      <!-- HƯỚNG DẪN TÀI KHOẢN THEO VAI TRÒ -->
+      <div style="margin-top:20px;padding:14px;background:#f8fafc;border-radius:12px;border:1px dashed #cbd5e1;font-size:12.5px;">
+        <div style="font-weight:800;color:#0284c7;margin-bottom:8px;"><i class="fa-solid fa-key"></i> Bấm 1 chạm để vào thẳng cổng tương ứng:</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="nurse.html" onclick="quickLogin('nurse')" style="color:#0f172a;text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:#ecfdf5;padding:8px 12px;border-radius:8px;border:1px solid #a7f3d0;">
+            <span><i class="fa-solid fa-user-nurse" style="color:#10b981;"></i> <strong>Điều dưỡng:</strong> minh.nguyen@bbcare.vn</span>
+            <span style="color:#059669;font-weight:800;font-size:11.5px;">Vào cổng ➜</span>
+          </a>
+          <a href="staff.html" onclick="quickLogin('staff')" style="color:#0f172a;text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:#fff7ed;padding:8px 12px;border-radius:8px;border:1px solid #fed7aa;">
+            <span><i class="fa-solid fa-user-tie" style="color:#f97316;"></i> <strong>Nhân viên vận hành:</strong> ha.nguyen@bbcare.vn</span>
+            <span style="color:#c2410c;font-weight:800;font-size:11.5px;">Vào cổng ➜</span>
+          </a>
+          <a href="admin.html" onclick="quickLogin('admin')" style="color:#0f172a;text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:#eef2ff;padding:8px 12px;border-radius:8px;border:1px solid #c7d2fe;">
+            <span><i class="fa-solid fa-shield-halved" style="color:#4f46e5;"></i> <strong>Quản trị viên:</strong> admin@bbcare.vn</span>
+            <span style="color:#4338ca;font-weight:800;font-size:11.5px;">Vào cổng ➜</span>
+          </a>
+          <a href="index.html?account=true" onclick="quickLogin('client')" style="color:#0f172a;text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:#f1f5f9;padding:8px 12px;border-radius:8px;border:1px solid #cbd5e1;">
+            <span><i class="fa-solid fa-house-user" style="color:#64748b;"></i> <strong>Khách hàng:</strong> khachhang@gmail.com</span>
+            <span style="color:#0284c7;font-weight:800;font-size:11.5px;">Trang chủ ➜</span>
+          </a>
+        </div>
+      </div>
+    </form>
+    
+    <!-- FORM ĐĂNG KÝ MỚI -->
+    <form id="registerForm" style="display:none" onsubmit="handleAuthSubmit(event,'register')">
+      <div class="form-group">
+        <label>Họ và tên của bạn *</label>
+        <input type="text" class="form-control" id="regName" placeholder="Nhập họ tên đầy đủ..." required>
+      </div>
+      <div class="form-group">
+        <label>Số điện thoại liên hệ *</label>
+        <input type="tel" class="form-control" placeholder="Nhập số điện thoại..." required>
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu tạo mới *</label>
+        <input type="password" class="form-control" placeholder="Tạo mật khẩu an toàn..." required>
+      </div>
+      <button type="submit" class="btn-card btn-register" style="margin-top:10px">TẠO TÀI KHOẢN MỚI</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/login.js"></script>
+</body>
+</html>

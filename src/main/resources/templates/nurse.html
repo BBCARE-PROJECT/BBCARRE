@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng Điều Dưỡng Viên | BBCare Homecare</title>
+    <!-- Google Fonts & FontAwesome 6 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/portal.css">
+    <link rel="stylesheet" href="/css/nurse/nurse.css">
+</head>
+<body>
+
+<div class="portal-wrapper">
+    <!-- SIDEBAR ĐIỀU DƯỠNG -->
+    <aside class="portal-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo-icon">
+                <i class="fa-solid fa-user-nurse"></i>
+            </div>
+            <div class="sidebar-logo-text">
+                <h3>BBCare Y Tế</h3>
+                <span class="sidebar-role-badge role-badge-nurse"><i class="fa-solid fa-circle-check"></i> Điều Dưỡng Viên</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav-container">
+            <div class="sidebar-section-title">Nhiệm Vụ Ca Trực</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link active" onclick="switchTab('tab-dashboard', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <span>Tổng quan ca trực</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-requests', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-bell-concierge"></i>
+                            <span>Ca chờ tiếp nhận</span>
+                        </div>
+                        <span class="sidebar-badge danger request-count-badge">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-active-shifts', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-stethoscope"></i>
+                            <span>Ca trực đang thực hiện</span>
+                        </div>
+                        <span class="sidebar-badge success">1</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-history', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <span>Lịch sử ca khám & chăm sóc</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">Hồ Sơ & Chứng Chỉ</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-certificates', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-file-medical"></i>
+                            <span>Chứng chỉ hành nghề</span>
+                        </div>
+                        <span class="sidebar-badge warning">2</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-profile', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>Hồ sơ điều dưỡng</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">Điều Hướng</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="index.html" class="sidebar-link">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Về trang chủ khách hàng</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user-card">
+                <div class="sidebar-user-info">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">NM</div>
+                    <div class="user-text">
+                        <h4>ĐD. Nguyễn Văn Minh</h4>
+                        <p>Mã: DD-0824 • Sẵn sàng</p>
+                    </div>
+                </div>
+                <button class="sidebar-logout-btn" onclick="logoutPortal('Điều Dưỡng Viên')" title="Đăng xuất">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="portal-main">
+        <!-- TOPBAR -->
+        <header class="portal-topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                <div class="topbar-page-info">
+                    <h2 id="topbarPageTitle">Bảng Điều Khiển Điều Dưỡng</h2>
+                    <div class="topbar-breadcrumb">
+                        <span>BBCare Homecare</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+                        <span>Điều Dưỡng Viên</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="topbar-btn-icon" onclick="switchTab('tab-requests', document.querySelector('.sidebar-link[onclick*=\'tab-requests\']'))" title="Thông báo yêu cầu mới">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge-dot"></span>
+                </div>
+
+                <div class="topbar-btn-icon" onclick="openContactClientModal('Gia đình bệnh nhân', '0905123456')" title="Liên hệ người nhà">
+                    <i class="fa-regular fa-comments"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- PORTAL CONTENT -->
+        <div class="portal-content">
+
+            <!-- ================= TAB 1: DASHBOARD ================= -->
+            <div id="tab-dashboard" class="tab-pane active">
+                <!-- STATS -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Yêu cầu chờ nhận</span>
+                            <h3 class="request-count-badge">3</h3>
+                            <div class="stat-trend up"><i class="fa-solid fa-arrow-up"></i> Cần phản hồi ngay</div>
+                        </div>
+                        <div class="stat-icon-box stat-orange"><i class="fa-solid fa-bell-concierge"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Ca đang thực hiện</span>
+                            <h3>1</h3>
+                            <div class="stat-trend up"><i class="fa-solid fa-location-dot"></i> Tại Q. Hải Châu</div>
+                        </div>
+                        <div class="stat-icon-box stat-blue"><i class="fa-solid fa-stethoscope"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Ca hoàn thành tháng này</span>
+                            <h3>48</h3>
+                            <div class="stat-trend up"><i class="fa-solid fa-arrow-trend-up"></i> Đánh giá 4.9/5.0 ★</div>
+                        </div>
+                        <div class="stat-icon-box stat-green"><i class="fa-solid fa-circle-check"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Thu nhập tạm tính</span>
+                            <h3>14.400.000đ</h3>
+                            <div class="stat-trend up"><i class="fa-solid fa-wallet"></i> +18% so với tháng trước</div>
+                        </div>
+                        <div class="stat-icon-box stat-purple"><i class="fa-solid fa-coins"></i></div>
+                    </div>
+                </div>
+
+                <!-- ACTIVE ONGOING SHIFT BANNER -->
+                <div class="panel-card" style="border-left: 5px solid var(--accent-emerald);">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-bolt" style="color: var(--accent-emerald);"></i> Ca Trực Trọng Điểm Hôm Nay</h3>
+                            <p>Bệnh nhân: <strong>Ông Trần Văn Hùng (72 tuổi)</strong> • Thay băng & Cho ăn qua sonde</p>
+                        </div>
+                        <div class="panel-actions">
+                            <span id="status-badge-101" class="badge-status badge-ongoing"><i class="fa-solid fa-heart-pulse"></i> Đang chăm sóc</span>
+                            <button class="btn-action-sm btn-primary-sm" onclick="openHealthStatusModal('101', 'Ông Trần Văn Hùng')">
+                                <i class="fa-solid fa-notes-medical"></i> Cập nhật sinh hiệu
+                            </button>
+                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Gia đình ông Trần Văn Hùng', '0905123456')">
+                                <i class="fa-solid fa-phone"></i> Gọi người nhà
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="background: #f8fafc;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                            <div>
+                                <small style="color: var(--text-muted); font-weight: 700;">ĐỊA CHỈ NHÀ BỆNH NHÂN</small>
+                                <p style="font-weight: 600;"><i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> 45 Nguyễn Tri Phương, P. Chính Gián, Q. Thanh Khê, Đà Nẵng</p>
+                            </div>
+                            <div>
+                                <small style="color: var(--text-muted); font-weight: 700;">HÀNH ĐỘNG CA TRỰC</small>
+                                <div style="display: flex; gap: 6px; margin-top: 4px;">
+                                    <button class="btn-action-sm btn-success-sm" onclick="confirmCompleteTodayShift('101', 'Ông Trần Văn Hùng')">
+                                        <i class="fa-solid fa-circle-check"></i> Xác nhận hoàn thành ca hôm nay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK ACTIONS SECTION -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3>Yêu Cầu Đặt Ca Chờ Bạn Tiếp Nhận</h3>
+                            <p>Vui lòng xác nhận hoặc từ chối để hệ thống điều phối y tá kịp thời</p>
+                        </div>
+                        <button class="btn-action-sm btn-outline-sm" onclick="switchTab('tab-requests', document.querySelector('.sidebar-link[onclick*=\'tab-requests\']'))">
+                            Xem tất cả yêu cầu
+                        </button>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã đơn</th>
+                                        <th>Bệnh nhân</th>
+                                        <th>Dịch vụ yêu cầu</th>
+                                        <th>Thời gian & Khu vực</th>
+                                        <th>Thù lao</th>
+                                        <th style="text-align: right;">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="request-row-201">
+                                        <td><strong>#BK-9021</strong></td>
+                                        <td>
+                                            <div style="font-weight: 700;">Bà Lê Thị Mai (68 tuổi)</div>
+                                            <small style="color: var(--text-muted);">SĐT: 0905 *** 892</small>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed"><i class="fa-solid fa-syringe"></i> Truyền dịch & Đổi băng gạc</span></td>
+                                        <td>
+                                            <div>14:30 - Hôm nay</div>
+                                            <small style="color: var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Q. Hải Châu, Đà Nẵng</small>
+                                        </td>
+                                        <td><strong style="color: var(--primary);">350.000đ</strong></td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="viewPatientDetail({name: 'Bà Lê Thị Mai', age: 68, gender: 'Nữ', phone: '0905334892', address: '128 Lê Duẩn, P. Thạch Thang, Q. Hải Châu, Đà Nẵng', condition: 'Hồi phục sau phẫu thuật ruột thừa, cơ thể suy kiệt cần truyền bổ sung đạm/điện giải.', instructions: 'Kiểm tra huyết áp trước khi truyền. Tốc độ truyền 30 giọt/phút.', contactPerson: 'Con trai: Anh Hùng (0905 334 892)'})">
+                                                <i class="fa-solid fa-eye"></i> Xem HS
+                                            </button>
+                                            <button class="btn-action-sm btn-success-sm" onclick="acceptBooking('201', 'Bà Lê Thị Mai')">
+                                                <i class="fa-solid fa-check"></i> Nhận ca
+                                            </button>
+                                            <button class="btn-action-sm btn-danger-sm" onclick="openRejectModal('201', 'Bà Lê Thị Mai')">
+                                                <i class="fa-solid fa-xmark"></i> Từ chối
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="request-row-202">
+                                        <td><strong>#BK-9022</strong></td>
+                                        <td>
+                                            <div style="font-weight: 700;">Bé Hoàng Bảo Nam (4 tuổi)</div>
+                                            <small style="color: var(--text-muted);">SĐT: 0914 *** 119</small>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed"><i class="fa-solid fa-child"></i> Chăm sóc bé sốt cao tại nhà</span></td>
+                                        <td>
+                                            <div>16:00 - Hôm nay</div>
+                                            <small style="color: var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Q. Sơn Trà, Đà Nẵng</small>
+                                        </td>
+                                        <td><strong style="color: var(--primary);">400.000đ</strong></td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="viewPatientDetail({name: 'Bé Hoàng Bảo Nam', age: 4, gender: 'Nam', phone: '0914119223', address: '82 Võ Văn Kiệt, P. An Hải Đông, Q. Sơn Trà, Đà Nẵng', condition: 'Sốt xuất huyết độ 1, sốt cao 39 độ cần chườm ấm & theo dõi sát dấu hiệu hạ nhiệt.', instructions: 'Chườm ấm vùng bẹn, nách. Cho uống thuốc hạ sốt theo liều lượng bác sĩ nhi đã kê.', contactPerson: 'Mẹ: Chị Vy (0914 119 223)'})">
+                                                <i class="fa-solid fa-eye"></i> Xem HS
+                                            </button>
+                                            <button class="btn-action-sm btn-success-sm" onclick="acceptBooking('202', 'Bé Hoàng Bảo Nam')">
+                                                <i class="fa-solid fa-check"></i> Nhận ca
+                                            </button>
+                                            <button class="btn-action-sm btn-danger-sm" onclick="openRejectModal('202', 'Bé Hoàng Bảo Nam')">
+                                                <i class="fa-solid fa-xmark"></i> Từ chối
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 2: DANH SÁCH YÊU CẦU ================= -->
+            <div id="tab-requests" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-bell-concierge" style="color: var(--primary);"></i> Danh Sách Yêu Cầu Đặt Ca Trực Chờ Tiếp Nhận</h3>
+                            <p>Xem chi tiết bệnh nhân, chỉ định y khoa và bấm Tiếp nhận hoặc Từ chối ca</p>
+                        </div>
+                        <div class="panel-actions">
+                            <div class="search-input-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" placeholder="Tìm theo tên bệnh nhân, SĐT...">
+                            </div>
+                            <select class="form-select-sm">
+                                <option>Tất cả quận Đà Nẵng</option>
+                                <option>Hải Châu</option>
+                                <option>Thanh Khê</option>
+                                <option>Sơn Trà</option>
+                                <option>Liên Chiểu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <!-- Request Card 1 -->
+                        <div class="shift-card" id="request-row-301">
+                            <div class="shift-main-info">
+                                <div class="shift-date-badge">
+                                    <span>T4</span>
+                                    <span>16</span>
+                                </div>
+                                <div class="shift-details">
+                                    <h4>Bà Nguyễn Thị Hoa (75 tuổi) <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Chờ tiếp nhận</span></h4>
+                                    <p class="shift-meta">
+                                        <span><i class="fa-solid fa-notes-medical" style="color: var(--primary);"></i> Rửa vết loét tì đè & Đặt ống Sonde dạ dày</span>
+                                        <span><i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> K120/15 Điện Biên Phủ, Q. Thanh Khê</span>
+                                        <span><i class="fa-regular fa-clock"></i> 15:00 - 17:00</span>
+                                        <span><i class="fa-solid fa-money-bill-wave" style="color: #10b981;"></i> Thù lao: <strong>450.000đ</strong></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="shift-actions">
+                                <button class="btn-action-sm btn-outline-sm" onclick="viewPatientDetail({name: 'Bà Nguyễn Thị Hoa', age: 75, gender: 'Nữ', phone: '0905888999', address: 'K120/15 Điện Biên Phủ, Q. Thanh Khê, TP Đà Nẵng', condition: 'Bệnh nhân tai biến nằm liệt giường 2 năm, xuất hiện vết loét tì đè vùng cùng cụt độ 2. Ống sonde dạ dày tắc cần thay mới.', instructions: 'Rửa vết loét bằng nước muối sinh lý, bôi mỡ kháng sinh và dán gạc hydrocolloid. Đặt sonde vô trùng cỡ 16Fr.', contactPerson: 'Người chăm sóc: Chị Hà (0905 888 999)'})">
+                                    <i class="fa-solid fa-file-medical"></i> Xem hồ sơ bệnh nhân
+                                </button>
+                                <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Bà Nguyễn Thị Hoa', '0905888999')">
+                                    <i class="fa-solid fa-comments"></i> Liên hệ người nhà
+                                </button>
+                                <button class="btn-action-sm btn-success-sm" onclick="acceptBooking('301', 'Bà Nguyễn Thị Hoa')">
+                                    <i class="fa-solid fa-check"></i> Tiếp nhận ca
+                                </button>
+                                <button class="btn-action-sm btn-danger-sm" onclick="openRejectModal('301', 'Bà Nguyễn Thị Hoa')">
+                                    <i class="fa-solid fa-xmark"></i> Từ chối
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Request Card 2 -->
+                        <div class="shift-card" id="request-row-302">
+                            <div class="shift-main-info">
+                                <div class="shift-date-badge">
+                                    <span>T4</span>
+                                    <span>16</span>
+                                </div>
+                                <div class="shift-details">
+                                    <h4>Cụ Ông Đỗ Văn Hào (81 tuổi) <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Chờ tiếp nhận</span></h4>
+                                    <p class="shift-meta">
+                                        <span><i class="fa-solid fa-syringe" style="color: var(--primary);"></i> Tiêm bắp theo đơn bác sĩ & Đo đường huyết mao mạch</span>
+                                        <span><i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> 210 Nguyễn Lương Bằng, Q. Liên Chiểu</span>
+                                        <span><i class="fa-regular fa-clock"></i> 18:30 - 19:30</span>
+                                        <span><i class="fa-solid fa-money-bill-wave" style="color: #10b981;"></i> Thù lao: <strong>300.000đ</strong></span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="shift-actions">
+                                <button class="btn-action-sm btn-outline-sm" onclick="viewPatientDetail({name: 'Cụ Ông Đỗ Văn Hào', age: 81, gender: 'Nam', phone: '0977221345', address: '210 Nguyễn Lương Bằng, Q. Liên Chiểu, TP Đà Nẵng', condition: 'Tiểu đường type 2 kèm thoái hóa khớp nặng, đi lại khó khăn.', instructions: 'Tiêm bắp sâu kháng sinh theo toa BV Đa Khoa Đà Nẵng, kiểm tra mao mạch đường huyết trước ăn tối.', contactPerson: 'Con trai: Anh Tuấn (0977 221 345)'})">
+                                    <i class="fa-solid fa-file-medical"></i> Xem hồ sơ bệnh nhân
+                                </button>
+                                <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Cụ Ông Đỗ Văn Hào', '0977221345')">
+                                    <i class="fa-solid fa-comments"></i> Liên hệ người nhà
+                                </button>
+                                <button class="btn-action-sm btn-success-sm" onclick="acceptBooking('302', 'Cụ Ông Đỗ Văn Hào')">
+                                    <i class="fa-solid fa-check"></i> Tiếp nhận ca
+                                </button>
+                                <button class="btn-action-sm btn-danger-sm" onclick="openRejectModal('302', 'Cụ Ông Đỗ Văn Hào')">
+                                    <i class="fa-solid fa-xmark"></i> Từ chối
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3: CA TRỰC ĐANG THỰC HIỆN ================= -->
+            <div id="tab-active-shifts" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-stethoscope" style="color: var(--accent-emerald);"></i> Ca Trực Đang Nhận & Hồ Sơ Bệnh Nhân Hôm Nay</h3>
+                            <p>Theo dõi sát sao sinh hiệu và xác nhận hoàn tất ca sau khi kết thúc quy trình chăm sóc tại nhà</p>
+                        </div>
+                        <div class="panel-actions">
+                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Gia đình ông Trần Văn Hùng', '0905123456')">
+                                <i class="fa-solid fa-phone"></i> Gọi người nhà: 0905 123 456
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <!-- HERO ACTIVE SHIFT CARD -->
+                        <div class="active-shift-hero-card">
+                            <!-- Top Profile Header -->
+                            <div class="shift-hero-top">
+                                <div class="patient-profile-large">
+                                    <div class="patient-avatar-large">
+                                        <i class="fa-solid fa-user-injured"></i>
+                                    </div>
+                                    <div class="patient-header-details">
+                                        <h3>
+                                            <span>Ông Trần Văn Hùng (72 tuổi)</span>
+                                            <span class="shift-code-tag"><i class="fa-solid fa-hashtag"></i> CA-8890</span>
+                                        </h3>
+                                        <div class="patient-header-meta">
+                                            <span><i class="fa-solid fa-venus-mars" style="color: var(--primary);"></i> Nam giới</span>
+                                            <span><i class="fa-solid fa-clock" style="color: #0284c7;"></i> Ca trực: 13:30 – 15:30 (Hôm nay)</span>
+                                            <span><i class="fa-solid fa-shield-halved" style="color: var(--accent-emerald);"></i> Gói chăm sóc phục hồi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="status-badge-current" class="shift-status-pill">
+                                        <span class="pulse-dot"></span>
+                                        <span>Đang thực hiện ca trực</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detailed Information Grid (Đã bỏ chỉ định bác sĩ) -->
+                            <div class="shift-info-grid-large" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                                <div class="shift-info-box">
+                                    <div class="info-label"><i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> ĐỊA CHỈ TẬN NƠI</div>
+                                    <div class="info-value">45 Nguyễn Tri Phương, P. Chính Gián, Q. Thanh Khê, Đà Nẵng</div>
+                                </div>
+                                <div class="shift-info-box">
+                                    <div class="info-label"><i class="fa-solid fa-phone" style="color: #10b981;"></i> LIÊN HỆ GIA ĐÌNH</div>
+                                    <div class="info-value">Anh Tuấn (Con trai) • SĐT: <strong>0905 123 456</strong></div>
+                                </div>
+                            </div>
+
+                            <!-- 1. KHỐI XÁC NHẬN HOÀN THÀNH CA TRỰC HÔM NAY (ĐÃ ĐƯA LÊN TRÊN CHỈ SỐ SINH HIỆU) -->
+                            <div class="shift-completion-box" id="shiftCompletionContainer" style="margin: 20px 0 24px 0;">
+                                <div class="shift-completion-text">
+                                    <h4><i class="fa-solid fa-shield-heart"></i> Xác Nhận Đã Hoàn Thành Ca Trực Hôm Nay</h4>
+                                    <p>Khi đã hoàn tất chăm sóc, thực hiện thủ thuật điều dưỡng và dặn dò người nhà kỹ càng, vui lòng bấm nút xác nhận hoàn thành để hệ thống chốt ca và cập nhật thu nhập.</p>
+                                </div>
+                                <div id="shiftCompletionActionArea">
+                                    <button id="btnConfirmShiftDone" class="btn-complete-today-shift" onclick="confirmCompleteTodayShift('current', 'Ông Trần Văn Hùng')">
+                                        <i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>
+                                        <span>Xác Nhận Đã Hoàn Thành Ca Hôm Nay</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 2. 4 BIG VITALS METRIC CARDS (CHỈ SỐ SINH HIỆU BỆNH NHÂN) -->
+                            <div class="vitals-section-title">
+                                <h4><i class="fa-solid fa-heart-pulse" style="color: #ef4444;"></i> Chỉ Số Sinh Hiệu Bệnh Nhân Ghi Nhận Gần Nhất</h4>
+                                <button class="btn-action-sm btn-primary-sm" onclick="openHealthStatusModal('8890', 'Trần Văn Hùng')">
+                                    <i class="fa-solid fa-file-waveform"></i> Ghi nhận sinh hiệu mới
+                                </button>
+                            </div>
+
+                            <div class="vitals-metric-grid">
+                                <!-- Card 1: Mạch / Heart Rate -->
+                                <div class="vital-metric-card vital-hr">
+                                    <div class="vital-card-header">
+                                        <span class="vital-name">Nhịp tim / Mạch</span>
+                                        <div class="vital-icon-circle"><i class="fa-solid fa-heart"></i></div>
+                                    </div>
+                                    <div class="vital-number-display">
+                                        <span class="vital-main-number" id="vitalDisplayHr">78</span>
+                                        <span class="vital-unit-text">bpm</span>
+                                    </div>
+                                    <span class="vital-status-pill normal"><i class="fa-solid fa-check"></i> Bình thường (60-90)</span>
+                                </div>
+
+                                <!-- Card 2: Huyết áp / BP -->
+                                <div class="vital-metric-card vital-bp">
+                                    <div class="vital-card-header">
+                                        <span class="vital-name">Huyết áp</span>
+                                        <div class="vital-icon-circle"><i class="fa-solid fa-gauge-high"></i></div>
+                                    </div>
+                                    <div class="vital-number-display">
+                                        <span class="vital-main-number" id="vitalDisplayBp">125/80</span>
+                                        <span class="vital-unit-text">mmHg</span>
+                                    </div>
+                                    <span class="vital-status-pill normal"><i class="fa-solid fa-check"></i> Huyết áp tối ưu</span>
+                                </div>
+
+                                <!-- Card 3: SpO2 -->
+                                <div class="vital-metric-card vital-spo2">
+                                    <div class="vital-card-header">
+                                        <span class="vital-name">Oxy trong máu SpO2</span>
+                                        <div class="vital-icon-circle"><i class="fa-solid fa-lungs"></i></div>
+                                    </div>
+                                    <div class="vital-number-display">
+                                        <span class="vital-main-number" id="vitalDisplaySpo2">98</span>
+                                        <span class="vital-unit-text">%</span>
+                                    </div>
+                                    <span class="vital-status-pill normal"><i class="fa-solid fa-check"></i> Bão hòa tốt (>95%)</span>
+                                </div>
+
+                                <!-- Card 4: Thân nhiệt -->
+                                <div class="vital-metric-card vital-temp">
+                                    <div class="vital-card-header">
+                                        <span class="vital-name">Thân nhiệt</span>
+                                        <div class="vital-icon-circle"><i class="fa-solid fa-temperature-three-quarters"></i></div>
+                                    </div>
+                                    <div class="vital-number-display">
+                                        <span class="vital-main-number" id="vitalDisplayTemp">36.8</span>
+                                        <span class="vital-unit-text">°C</span>
+                                    </div>
+                                    <span class="vital-status-pill normal"><i class="fa-solid fa-check"></i> Chuẩn an toàn</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 4: LỊCH SỬ CA KHÁM ================= -->
+            <div id="tab-history" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary);"></i> Lịch Sử Ca Khám & Chăm Sóc Đã Hoàn Tất</h3>
+                            <p>Danh sách các ca trực đã hoàn tất, đánh giá từ thân nhân và thu nhập chi tiết</p>
+                        </div>
+                        <div class="panel-actions">
+                            <input type="date" class="form-control-custom" style="width: auto; padding: 6px 12px;" value="2026-09-01">
+                            <button class="btn-action-sm btn-primary-sm"><i class="fa-solid fa-filter"></i> Lọc ca</button>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã ca</th>
+                                        <th>Ngày thực hiện</th>
+                                        <th>Bệnh nhân</th>
+                                        <th>Nội dung chăm sóc</th>
+                                        <th>Trạng thái</th>
+                                        <th>Đánh giá của gia đình</th>
+                                        <th>Thù lao</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#CA-8876</td>
+                                        <td>15/09/2026</td>
+                                        <td><strong>Ông Phạm Đình Trọng (65 tuổi)</strong></td>
+                                        <td>Cắt chỉ vết mổ nội soi, rửa cồn sát trùng</td>
+                                        <td><span class="badge-status badge-completed"><i class="fa-solid fa-check"></i> Đã hoàn thành</span></td>
+                                        <td><span style="color: #f59e0b;"><i class="fa-solid fa-star"></i> 5.0</span> "Điều dưỡng thao tác rất nhẹ nhàng, chu đáo."</td>
+                                        <td><strong>300.000đ</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#CA-8854</td>
+                                        <td>14/09/2026</td>
+                                        <td><strong>Bà Trần Thị Tuyết (59 tuổi)</strong></td>
+                                        <td>Truyền đạm dinh dưỡng, kiểm tra sinh hiệu</td>
+                                        <td><span class="badge-status badge-completed"><i class="fa-solid fa-check"></i> Đã hoàn thành</span></td>
+                                        <td><span style="color: #f59e0b;"><i class="fa-solid fa-star"></i> 5.0</span> "Rất đúng giờ, đo huyết áp cẩn thận."</td>
+                                        <td><strong>350.000đ</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#CA-8830</td>
+                                        <td>12/09/2026</td>
+                                        <td><strong>Bé Vũ Gia Huy (7 tuổi)</strong></td>
+                                        <td>Chăm sóc sau mổ amidan, hướng dẫn dinh dưỡng</td>
+                                        <td><span class="badge-status badge-completed"><i class="fa-solid fa-check"></i> Đã hoàn thành</span></td>
+                                        <td><span style="color: #f59e0b;"><i class="fa-solid fa-star"></i> 4.8</span> "Y tá dỗ bé rất tốt."</td>
+                                        <td><strong>400.000đ</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 5: CHỨNG CHỈ HÀNH NGHỀ ================= -->
+            <div id="tab-certificates" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-file-medical" style="color: var(--primary);"></i> Chứng Chỉ Chuyên Môn & Giấy Phép Hành Nghề</h3>
+                            <p>Tải lên bằng cấp, chứng chỉ tiêm truyền, hồi sức cấp cứu để Nhân viên vận hành thẩm định phê duyệt</p>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <!-- Upload Dropzone -->
+                        <div class="upload-dropzone" onclick="document.getElementById('certFileInput').click()">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <h4 style="font-weight: 800; margin-bottom: 6px;">Bấm vào đây hoặc kéo thả file chứng chỉ vào đây</h4>
+                            <p style="color: var(--text-muted); font-size: 13px;">Hỗ trợ định dạng PDF, JPG, PNG (Tối đa 15MB)</p>
+                            <input type="file" id="certFileInput" style="display: none;" onchange="handleCertificateUpload(event)" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+
+                        <h4 style="font-weight: 800; margin: 30px 0 16px;">Danh sách chứng chỉ đã nộp thẩm định:</h4>
+                        <div id="certListContainer">
+                            <div class="shift-card">
+                                <div class="shift-main-info">
+                                    <div class="stat-icon-box stat-blue"><i class="fa-solid fa-certificate"></i></div>
+                                    <div class="shift-details">
+                                        <h4>Chứng chỉ hành nghề khám bệnh, chữa bệnh chuyên khoa Điều Dưỡng</h4>
+                                        <p class="shift-meta">
+                                            <span><i class="fa-solid fa-building-columns"></i> Cấp bởi: Sở Y Tế TP. Đà Nẵng</span>
+                                            <span><i class="fa-regular fa-calendar-check"></i> Hiệu lực: Vô thời hạn</span>
+                                            <span><i class="fa-solid fa-hashtag"></i> Số: 004821/DNA-CCHN</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge-status badge-completed"><i class="fa-solid fa-circle-check"></i> Đã phê duyệt</span>
+                                </div>
+                            </div>
+
+                            <div class="shift-card">
+                                <div class="shift-main-info">
+                                    <div class="stat-icon-box stat-purple"><i class="fa-solid fa-graduation-cap"></i></div>
+                                    <div class="shift-details">
+                                        <h4>Bằng Cử Nhân Điều Dưỡng Đa Khoa - Đại Học Y Dược Huế</h4>
+                                        <p class="shift-meta">
+                                            <span><i class="fa-solid fa-award"></i> Xếp loại: Giỏi</span>
+                                            <span><i class="fa-regular fa-calendar-check"></i> Năm tốt nghiệp: 2016</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge-status badge-completed"><i class="fa-solid fa-circle-check"></i> Đã phê duyệt</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 6: HỒ SƠ ĐIỀU DƯỠNG ================= -->
+            <div id="tab-profile" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-id-card" style="color: var(--primary);"></i> Cập Nhật Thông Tin Cá Nhân Điều Dưỡng</h3>
+                            <p>Quản lý số điện thoại, kinh nghiệm, chuyên môn y khoa và khu vực nhận ca tại Đà Nẵng</p>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form onsubmit="handleProfileUpdate(event)">
+                            <div class="form-grid-2">
+                                <div class="form-group-custom">
+                                    <label>Họ và tên điều dưỡng *</label>
+                                    <input type="text" class="form-control-custom" value="Nguyễn Văn Minh" required>
+                                </div>
+                                <div class="form-group-custom">
+                                    <label>Mã nhân sự / ID</label>
+                                    <input type="text" class="form-control-custom" value="DD-0824" readonly style="background: #f1f5f9;">
+                                </div>
+                            </div>
+
+                            <div class="form-grid-2">
+                                <div class="form-group-custom">
+                                    <label>Số điện thoại liên hệ *</label>
+                                    <input type="tel" class="form-control-custom" value="0908786168" required>
+                                </div>
+                                <div class="form-group-custom">
+                                    <label>Email cá nhân</label>
+                                    <input type="email" class="form-control-custom" value="minh.nguyen@bbcare.vn" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label>Địa chỉ thường trú</label>
+                                <input type="text" class="form-control-custom" value="Số 12 đường Trần Cao Vân, P. Tam Thuận, Q. Thanh Khê, Đà Nẵng">
+                            </div>
+
+                            <div class="form-grid-2">
+                                <div class="form-group-custom">
+                                    <label>Khu vực ưu tiên nhận ca</label>
+                                    <select class="form-control-custom">
+                                        <option>Toàn thành phố Đà Nẵng</option>
+                                        <option selected>Hải Châu & Thanh Khê</option>
+                                        <option>Sơn Trà & Ngũ Hành Sơn</option>
+                                        <option>Liên Chiểu & Cẩm Lệ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-custom">
+                                    <label>Số năm kinh nghiệm y tế</label>
+                                    <input type="number" class="form-control-custom" value="10">
+                                </div>
+                            </div>
+
+                            <div class="form-group-custom">
+                                <label>Tóm tắt năng lực & Kỹ thuật y khoa nổi bật</label>
+                                <textarea class="form-control-custom" rows="4">Chuyên sâu điều trị vết loét tì đè, thay băng vô trùng vết mổ khó, kỹ thuật truyền dịch an toàn, chăm sóc người cao tuổi tai biến liệt nửa người và đặt ống sonde dạ dày chuẩn y khoa.</textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Lưu thay đổi thông tin</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- 1. Modal View Patient Info -->
+<div id="patientDetailModal" class="portal-modal">
+    <div class="modal-content-card">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-user-injured" style="color: var(--primary);"></i> Thông Tin Chi Tiết Bệnh Nhân</h3>
+            <button class="modal-close-btn" onclick="closeModal('patientDetailModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0;">
+                <div class="user-avatar" style="width: 54px; height: 54px; font-size: 20px; background: #0284c7;">BN</div>
+                <div>
+                    <h3 id="pDetailName" style="font-size: 20px; font-weight: 800;">Tên Bệnh Nhân</h3>
+                    <p id="pDetailAgeGender" style="color: var(--text-muted); font-weight: 600;">72 tuổi • Nam</p>
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label><i class="fa-solid fa-phone" style="color: var(--accent-emerald);"></i> Số điện thoại:</label>
+                <div id="pDetailPhone" style="font-weight: 700;">0901234567</div>
+            </div>
+
+            <div class="form-group-custom">
+                <label><i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> Địa chỉ gia đình:</label>
+                <div id="pDetailAddress" style="font-weight: 600; background: #f8fafc; padding: 10px; border-radius: 8px;">Địa chỉ chi tiết</div>
+            </div>
+
+            <div class="form-group-custom">
+                <label><i class="fa-solid fa-notes-medical" style="color: var(--primary);"></i> Tiền sử & Bệnh lý hiện tại:</label>
+                <div id="pDetailCondition" style="font-weight: 600; line-height: 1.6;">Tình trạng sức khỏe</div>
+            </div>
+
+            <div class="form-group-custom">
+                <label><i class="fa-solid fa-clipboard-list" style="color: #f59e0b;"></i> Hướng dẫn & Y lệnh của Bác sĩ phụ trách:</label>
+                <div id="pDetailInstructions" style="background: #fffbeb; border: 1px solid #fde68a; padding: 12px; border-radius: 8px; font-weight: 600; color: #92400e;">Chỉ dẫn chăm sóc</div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group-custom">
+                    <label>Bác sĩ tham vấn:</label>
+                    <div id="pDetailDoctor" style="font-weight: 700; color: var(--text-main);">BS. Lê Hoàng Quân</div>
+                </div>
+                <div class="form-group-custom">
+                    <label>Người nhà liên hệ:</label>
+                    <div id="pDetailContactPerson" style="font-weight: 700; color: var(--text-main);">Con gái</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer-bar">
+            <a id="pDetailCallBtn" href="tel:0901234567" class="btn-action-sm btn-success-sm" style="text-decoration: none; padding: 10px 16px;">
+                <i class="fa-solid fa-phone"></i> Gọi người nhà
+            </a>
+            <button class="btn-secondary" onclick="closeModal('patientDetailModal')">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Modal Contact Client -->
+<div id="contactClientModal" class="portal-modal">
+    <div class="modal-content-card" style="max-width: 500px;">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-phone-volume" style="color: var(--primary);"></i> Liên Hệ Người Nhà Bệnh Nhân</h3>
+            <button class="modal-close-btn" onclick="closeModal('contactClientModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+            <p style="margin-bottom: 14px;">Liên hệ với gia đình: <strong id="contactModalClientName">Khách Hàng</strong></p>
+            <div style="text-align: center; margin: 20px 0;">
+                <h2 id="contactModalPhone" style="color: var(--primary); font-size: 28px; font-weight: 900; letter-spacing: 1px;">0901 234 567</h2>
+                <p style="color: var(--text-muted); font-size: 13px;">Hỗ trợ qua cuộc gọi trực tiếp hoặc tin nhắn mẫu nhanh</p>
+                <div style="margin-top: 16px;">
+                    <a id="contactCallLink" href="tel:0901234567" class="btn-primary" style="text-decoration: none; display: inline-flex;">
+                        <i class="fa-solid fa-phone"></i> Gọi điện thoại ngay
+                    </a>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                <label style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 8px;">Gửi tin nhắn thông báo nhanh:</label>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="btn-action-sm btn-outline-sm" style="text-align: left; padding: 10px;" onclick="sendQuickMessage('Chào bạn, Điều dưỡng BBCare đang trên đường di chuyển đến nhà bạn, dự kiến 15 phút nữa tới.')">
+                        🛵 "Điều dưỡng đang trên đường di chuyển tới nhà bạn (15 phút)"
+                    </button>
+                    <button class="btn-action-sm btn-outline-sm" style="text-align: left; padding: 10px;" onclick="sendQuickMessage('Chào bạn, Điều dưỡng đã tới trước cổng nhà, phiền người nhà mở cửa giúp.')">
+                        🚪 "Điều dưỡng đã tới trước cổng nhà, phiền người nhà mở cửa"
+                    </button>
+                    <button class="btn-action-sm btn-outline-sm" style="text-align: left; padding: 10px;" onclick="sendQuickMessage('Chào bạn, Điều dưỡng đã chuẩn bị đầy đủ dụng cụ y tế và thuốc cho ca chăm sóc hôm nay.')">
+                        🩹 "Đã chuẩn bị đầy đủ dụng cụ y tế cho ca trực hôm nay"
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer-bar">
+            <button class="btn-secondary" onclick="closeModal('contactClientModal')">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Modal Reject Booking -->
+<div id="rejectBookingModal" class="portal-modal">
+    <div class="modal-content-card" style="max-width: 480px;">
+        <div class="modal-header-bar">
+            <h3 style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Từ Chối Ca Trực</h3>
+            <button class="modal-close-btn" onclick="closeModal('rejectBookingModal')">✕</button>
+        </div>
+        <form onsubmit="submitRejectBooking(event)">
+            <input type="hidden" id="rejectModalRequestId">
+            <div class="modal-body-scroll">
+                <p>Bạn sắp từ chối ca trực của bệnh nhân <strong id="rejectModalPatientName">Bệnh nhân</strong>.</p>
+                <div class="form-group-custom" style="margin-top: 14px;">
+                    <label>Vui lòng chọn lý do từ chối *</label>
+                    <select id="rejectReason" class="form-control-custom" required>
+                        <option value="Trùng lịch ca trực khác">Trùng lịch ca trực khác đang chăm sóc</option>
+                        <option value="Khoảng cách địa lý quá xa">Khoảng cách địa lý quá xa ngoài bán kính</option>
+                        <option value="Có việc đột xuất cá nhân">Có việc đột xuất cá nhân</option>
+                        <option value="Chưa đủ dụng cụ chuyên sâu">Chưa đủ trang bị dụng cụ chuyên sâu cho ca này</option>
+                    </select>
+                </div>
+                <div class="form-group-custom">
+                    <label>Ghi chú bổ sung (tùy chọn)</label>
+                    <textarea class="form-control-custom" placeholder="Nhập lý do chi tiết để tổng đài nhân viên điều phối y tá khác..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-secondary" onclick="closeModal('rejectBookingModal')">Hủy bỏ</button>
+                <button type="submit" class="btn-action-sm btn-danger-sm" style="padding: 10px 18px;"><i class="fa-solid fa-xmark"></i> Xác nhận từ chối</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 4. Modal Update Health Status -->
+<div id="updateHealthModal" class="portal-modal">
+    <div class="modal-content-card">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-notes-medical" style="color: var(--primary);"></i> Ghi Nhận Sinh Hiệu Bệnh Nhân</h3>
+            <button class="modal-close-btn" onclick="closeModal('updateHealthModal')">✕</button>
+        </div>
+        <form onsubmit="submitHealthStatus(event)">
+            <input type="hidden" id="healthModalShiftId">
+            <div class="modal-body-scroll">
+                <p style="margin-bottom: 16px;">Ghi chép cho bệnh nhân: <strong id="healthModalPatientName" style="color: var(--primary);">Bệnh nhân</strong></p>
+                
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label><i class="fa-solid fa-gauge"></i> Huyết áp (mmHg) *</label>
+                        <input type="text" id="healthBP" class="form-control-custom" placeholder="120/80" value="120/80" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label><i class="fa-solid fa-heart" style="color: #ef4444;"></i> Nhịp tim / Mạch (bpm) *</label>
+                        <input type="number" id="healthHR" class="form-control-custom" placeholder="75" value="76" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label><i class="fa-solid fa-lungs" style="color: #06b6d4;"></i> Nồng độ Oxy SpO2 (%) *</label>
+                        <input type="number" id="healthSpO2" class="form-control-custom" placeholder="98" value="98" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label><i class="fa-solid fa-temperature-three-quarters" style="color: #f59e0b;"></i> Thân nhiệt (°C) *</label>
+                        <input type="number" step="0.1" id="healthTemp" class="form-control-custom" placeholder="36.5" value="36.8" required>
+                    </div>
+                </div>
+
+                <div class="form-group-custom">
+                    <label>Thủ thuật chuyên môn y tế đã thực hiện trong ca:</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; background: #f8fafc; padding: 12px; border-radius: 8px;">
+                        <label><input type="checkbox" checked> Rửa & thay băng vết thương</label>
+                        <label><input type="checkbox" checked> Truyền dịch / nước biển</label>
+                        <label><input type="checkbox"> Cho ăn qua ống Sonde</label>
+                        <label><input type="checkbox"> Khí dung mũi họng</label>
+                    </div>
+                </div>
+
+                <div class="form-group-custom">
+                    <label>Ghi chú tiến triển vết thương & phản ứng của bệnh nhân:</label>
+                    <textarea class="form-control-custom" placeholder="Vết thương khô ráo, không có mủ hay dấu hiệu nhiễm trùng. Bệnh nhân tỉnh táo, ăn ngủ tốt..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-secondary" onclick="closeModal('updateHealthModal')">Hủy</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Lưu sinh hiệu vào hồ sơ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/data.js"></script>
+<script src="/js/portal.js"></script>
+<script src="/js/nurse/nurse.js"></script>
+</body>
+</html>

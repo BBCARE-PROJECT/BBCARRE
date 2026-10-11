@@ -1,0 +1,22 @@
+/* ==========================================================================
+   BBCare Homecare - Stylesheet Cổng Điều Dưỡng Viên (Nurse Portal)
+   Dành cho dự án Spring Boot + Thymeleaf
+   ========================================================================== */
+
+@import url('../portal.css');
+
+/* Tùy biến phong cách riêng cho Điều Dưỡng (Tone màu Xanh Ngọc Y Tế & Trắng) */
+.role-badge-nurse {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.vital-metric-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vital-metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,13 @@
+/* ==========================================================================
+   BBCare Homecare - Stylesheet Cổng Quản Trị Hệ Thống (Admin Portal)
+   Dành cho dự án Spring Boot + Thymeleaf
+   ========================================================================== */
+
+@import url('../portal.css');
+
+/* Tùy biến phong cách riêng cho Quản Trị Viên (Tone màu Tím & Đen Tinh Tế) */
+.role-badge-admin {
+    background: #ede9fe;
+    color: #5b21b6;
+    border: 1px solid #ddd6fe;
+}

@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng Nhân Viên Vận Hành | BBCare Homecare</title>
+    <!-- Google Fonts & FontAwesome 6 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/portal.css">
+    <link rel="stylesheet" href="/css/staff/staff.css">
+</head>
+<body>
+
+<div class="portal-wrapper">
+    <!-- SIDEBAR NHÂN VIÊN VẬN HÀNH -->
+    <aside class="portal-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="sidebar-logo-text">
+                <h3>BBCare Vận Hành</h3>
+                <span class="sidebar-role-badge role-badge-staff"><i class="fa-solid fa-circle-check"></i> Nhân Viên Điều Phối</span>
+            </div>
+        </div>
+
+        <div class="sidebar-nav-container">
+            <div class="sidebar-section-title">Lịch Hẹn & Điều Phối</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link active" onclick="switchTab('tab-staff-dashboard', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <span>Tổng quan vận hành</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-appointments', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Lịch hẹn & Ca chăm sóc</span>
+                        </div>
+                        <span class="sidebar-badge success">12</span>
+                    </a>
+                </li>
+                <li>
+                    <!-- TÍNH NĂNG: Danh sách Điều Dưỡng & Xem lịch trực -->
+                    <a class="sidebar-link" onclick="switchTab('tab-nurse-schedules', this); renderStaffNurseTable();">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-user-nurse"></i>
+                            <span>Danh sách Điều dưỡng & Lịch trực</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">Kho & Thiết Bị Y Tế</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-inventory', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <span>Kho thuốc & Thiết bị</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-equipment-orders', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-cart-flatbed"></i>
+                            <span>Mua, thuê thiết bị</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-equipment-return', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Thu hồi & Hoàn cọc</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-discounts', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-tags"></i>
+                            <span>Khuyến mãi & Giảm giá</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">Tuyển Dụng & Bằng Cấp</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <!-- Thẩm định & Duyệt bằng cấp -->
+                    <a class="sidebar-link" onclick="switchTab('tab-verify-certs', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            <span>Duyệt bằng cấp Điều dưỡng</span>
+                        </div>
+                        <span class="sidebar-badge warning">3</span>
+                    </a>
+                </li>
+                <li>
+                    <!-- TÍNH NĂNG MỚI: Duyệt hồ sơ tuyển dụng (CV) -->
+                    <a class="sidebar-link" onclick="switchTab('tab-recruitment-cv', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span>Duyệt hồ sơ tuyển dụng (CV)</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">Báo Cáo & Thống Kê</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link" onclick="switchTab('tab-daily-reports', this)">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Báo cáo ngày & Đơn hàng</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">Điều Hướng</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="index.html" class="sidebar-link">
+                        <div class="sidebar-link-content">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Về trang chủ khách hàng</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user-card">
+                <div class="sidebar-user-info">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, #f97316, #ea580c);">NV</div>
+                    <div class="user-text">
+                        <h4>Nguyễn Thu Hà</h4>
+                        <p>Mã: NV-104 • CSKH & Kho</p>
+                    </div>
+                </div>
+                <button class="sidebar-logout-btn" onclick="logoutPortal('Nhân Viên Vận Hành')" title="Đăng xuất">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="portal-main">
+        <!-- TOPBAR -->
+        <header class="portal-topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                <div class="topbar-page-info">
+                    <h2 id="topbarPageTitle">Bảng Điều Khiển Nhân Viên Vận Hành</h2>
+                    <div class="topbar-breadcrumb">
+                        <span>BBCare Homecare</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+                        <span>Nhân Viên Vận Hành</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button class="btn-primary" style="padding: 8px 14px; font-size: 12.5px;" onclick="generateDailyReport()">
+                    <i class="fa-solid fa-file-arrow-down"></i> Xuất báo cáo ngày
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <div class="portal-content">
+
+            <!-- ================= TAB 1: OVERVIEW DASHBOARD ================= -->
+            <div id="tab-staff-dashboard" class="tab-pane active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Lịch hẹn hôm nay</span>
+                            <h3>24 ca</h3>
+                            <div class="stat-trend up"><i class="fa-solid fa-check"></i> 18 ca đã có Điều dưỡng nhận</div>
+                        </div>
+                        <div class="stat-icon-box stat-blue"><i class="fa-solid fa-calendar-day"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Bình Oxy đang cho thuê</span>
+                            <h3>36 bình</h3>
+                            <div class="stat-trend up"><i class="fa-solid fa-lungs"></i> Còn 14 bình sẵn sàng</div>
+                        </div>
+                        <div class="stat-icon-box stat-green"><i class="fa-solid fa-truck-medical"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Bằng cấp y tá chờ duyệt</span>
+                            <h3>3 hồ sơ</h3>
+                            <div class="stat-trend down"><i class="fa-solid fa-clock"></i> Cần nhân viên thẩm định</div>
+                        </div>
+                        <div class="stat-icon-box stat-orange"><i class="fa-solid fa-graduation-cap"></i></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <span>Khiếu nại / Phản hồi</span>
+                            <h3>2 việc</h3>
+                            <div class="stat-trend down"><i class="fa-solid fa-circle-exclamation"></i> Cần giải quyết ngay</div>
+                        </div>
+                        <div class="stat-icon-box stat-rose"><i class="fa-solid fa-headset"></i></div>
+                    </div>
+                </div>
+
+                <!-- Quick Appointments Overview -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3>Lịch Hẹn Cần Theo Dõi Trong Ngày</h3>
+                            <p>Theo dõi tiến trình các ca điều dưỡng tận nhà và hỗ trợ điều phối khẩn cấp</p>
+                        </div>
+                        <div class="panel-actions">
+                            <button class="btn-action-sm btn-outline-sm" onclick="switchTab('tab-appointments', document.querySelector('.sidebar-link[onclick*=\'tab-appointments\']'))">Xem tất cả lịch hẹn</button>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã ca</th>
+                                        <th>Khách hàng / Bệnh nhân</th>
+                                        <th>Dịch vụ</th>
+                                        <th>Điều dưỡng phụ trách</th>
+                                        <th>Thời gian</th>
+                                        <th>Trạng thái</th>
+                                        <th style="text-align: right;">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="apt-row-501">
+                                        <td>#LH-4101</td>
+                                        <td>
+                                            <strong>Trần Văn Hùng</strong>
+                                            <small style="display: block; color: var(--text-muted);">0905 123 456 • Q. Thanh Khê</small>
+                                        </td>
+                                        <td>Chăm sóc vết thương & Sonde</td>
+                                        <td class="apt-nurse-cell"><strong style="color: var(--primary);">ĐD. Nguyễn Văn Minh</strong></td>
+                                        <td class="apt-time-cell">13:30 - 15:30 (Hôm nay)</td>
+                                        <td><span class="badge-status badge-ongoing"><i class="fa-solid fa-heart-pulse"></i> Đang thực hiện</span></td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Trần Văn Hùng', '0905123456')" title="Gọi khách hàng">
+                                                <i class="fa-solid fa-phone"></i> Gọi khách
+                                            </button>
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openChangeAppointmentModal('501', 'Trần Văn Hùng', 'ĐD. Nguyễn Văn Minh', '13:30 Hôm nay')" title="Đổi điều dưỡng hoặc giờ hẹn">
+                                                <i class="fa-solid fa-pen-to-square"></i> Đổi ca
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="apt-row-502">
+                                        <td>#LH-4102</td>
+                                        <td>
+                                            <strong>Lê Thị Thảo</strong>
+                                            <small style="display: block; color: var(--text-muted);">0913 999 888 • Q. Hải Châu</small>
+                                        </td>
+                                        <td>Truyền nước biển / dịch tại nhà</td>
+                                        <td class="apt-nurse-cell"><strong style="color: var(--primary);">ĐD. Trần Thị Lan</strong></td>
+                                        <td class="apt-time-cell">15:00 - 17:00 (Hôm nay)</td>
+                                        <td><span class="badge-status badge-confirmed"><i class="fa-solid fa-check"></i> Đã gán Y tá</span></td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Lê Thị Thảo', '0913999888')">
+                                                <i class="fa-solid fa-phone"></i> Gọi khách
+                                            </button>
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openChangeAppointmentModal('502', 'Lê Thị Thảo', 'ĐD. Trần Thị Lan', '15:00 Hôm nay')">
+                                                <i class="fa-solid fa-pen-to-square"></i> Đổi ca
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 2: QUẢN LÝ LỊCH HẸN & ĐIỀU PHỐI ================= -->
+            <div id="tab-appointments" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-calendar-check" style="color: var(--primary);"></i> Quản Lý & Điều Phối Lịch Hẹn Chăm Sóc</h3>
+                            <p>Xem toàn bộ lịch hẹn khám bệnh tại nhà theo ngày, kiểm tra khung giờ và chỉnh sửa đổi điều dưỡng viên</p>
+                        </div>
+                        <div class="panel-actions" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <!-- Ô LỊCH CHỌN NGÀY HẸN TRỰC QUAN -->
+                            <div style="display: flex; gap: 8px; align-items: center; background: #fff; padding: 4px 10px; border: 1.5px solid #cbd5e1; border-radius: 8px;">
+                                <label style="font-size: 13px; font-weight: 700; color: var(--text-main); white-space: nowrap;"><i class="fa-solid fa-calendar-day" style="color: var(--primary);"></i> Ngày hẹn:</label>
+                                <input type="date" id="appointmentDateFilter" class="form-control-custom" style="padding: 2px 6px; font-weight: 700; border: none; background: transparent; cursor: pointer; width: 135px;" value="2026-10-11" onchange="filterAppointmentsByDate(this.value)">
+                                <button type="button" class="btn-action-sm btn-outline-sm" onclick="setAppointmentQuickDate('today')" style="padding: 2px 8px;">Hôm nay</button>
+                                <button type="button" class="btn-action-sm btn-outline-sm" onclick="setAppointmentQuickDate('tomorrow')" style="padding: 2px 8px;">Ngày mai</button>
+                            </div>
+                            <div class="search-input-box" style="min-width: 220px;">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="appointmentSearchInput" placeholder="Tìm kiếm bệnh nhân, SĐT..." oninput="handleAppointmentSearch(this.value)">
+                            </div>
+                            <select id="appointmentStatusFilter" class="form-select-sm" onchange="filterAppointmentsByStatus(this.value)">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="completed">Đã hoàn thành</option>
+                                <option value="busy">Đang thực hiện / Đã gán</option>
+                                <option value="pending">Chờ điều phối</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70px;">Mã lịch</th>
+                                        <th>Bệnh nhân / Địa chỉ</th>
+                                        <th>Dịch vụ yêu cầu</th>
+                                        <th style="width: 125px;">Điều dưỡng</th>
+                                        <th style="width: 120px;">Khung giờ hẹn</th>
+                                        <th style="width: 100px;">Trạng thái</th>
+                                        <th style="width: 75px;">Đánh giá</th>
+                                        <th style="text-align: right; width: 105px; padding-right: 12px;">Điều Chỉnh</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentListTableBody">
+                                    <tr id="apt-row-601">
+                                        <td style="font-weight: 800; color: #0284c7;">#BK-8821</td>
+                                        <td>
+                                            <strong style="font-size: 13px;">Ông Vũ Đình Phúc (80t)</strong>
+                                            <div style="font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="89 Ngô Quyền, Q. Sơn Trà"><i class="fa-solid fa-location-dot"></i> 89 Ngô Quyền, Sơn Trà</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 12px; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Vật lý trị liệu hồi phục tai biến">Vật lý trị liệu hồi phục tai biến</div>
+                                        </td>
+                                        <td class="apt-nurse-cell" style="white-space: nowrap;"><strong style="color: var(--primary);">BS. Lê Hoàng Quân</strong></td>
+                                        <td class="apt-time-cell" style="white-space: nowrap;">
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12px;"><i class="fa-regular fa-clock"></i> 08:00 - 10:30 (Sáng)</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">2026-10-11</div>
+                                        </td>
+                                        <td style="white-space: nowrap;"><span class="badge-status badge-completed">Đã hoàn thành</span></td>
+                                        <td style="white-space: nowrap;">
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 12.5px;">
+                                                <span>5.0</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: #15803d; font-weight: 600; margin-top: 1px;" title="Bác sĩ Quân xoa bóp và tập phục hồi rất ân cần, bố tôi đỡ mỏi nhiều."><i class="fa-solid fa-check"></i> Hài lòng</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 12px;">
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openChangeAppointmentModal('601', 'Ông Vũ Đình Phúc (80 tuổi)', 'quan', '2026-10-11', '08:00 - 10:30 (Sáng)')" title="Chỉnh sửa ca trực / Đổi lịch">
+                                                <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="apt-row-603">
+                                        <td style="font-weight: 800; color: #0284c7;">#BK-8819</td>
+                                        <td>
+                                            <strong style="font-size: 13px;">Bà Trần Ánh Nguyệt (72t)</strong>
+                                            <div style="font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="28 Bạch Đằng, Q. Hải Châu"><i class="fa-solid fa-location-dot"></i> 28 Bạch Đằng, Hải Châu</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 12px; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Thay băng & Rửa vết thương mổ">Thay băng & Rửa vết thương mổ</div>
+                                        </td>
+                                        <td class="apt-nurse-cell" style="white-space: nowrap;"><strong style="color: var(--primary);">ĐD. Trần Thị Mai</strong></td>
+                                        <td class="apt-time-cell" style="white-space: nowrap;">
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12px;"><i class="fa-regular fa-clock"></i> 14:00 - 16:30 (Chiều)</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">2026-10-11</div>
+                                        </td>
+                                        <td style="white-space: nowrap;"><span class="badge-status badge-completed">Đã hoàn thành</span></td>
+                                        <td style="white-space: nowrap;">
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 12.5px;">
+                                                <span>5.0</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: #15803d; font-weight: 600; margin-top: 1px;" title="Chị Mai làm rất nhẹ nhàng, vết thương không bị đau rát."><i class="fa-solid fa-check"></i> Hài lòng</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 12px;">
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openChangeAppointmentModal('603', 'Bà Trần Ánh Nguyệt (72 tuổi)', 'mai', '2026-10-11', '14:00 - 16:30 (Chiều)')" title="Chỉnh sửa ca trực / Đổi lịch">
+                                                <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="apt-row-604">
+                                        <td style="font-weight: 800; color: #0284c7;">#BK-8815</td>
+                                        <td>
+                                            <strong style="font-size: 13px;">Anh Hoàng Minh Trí (45t)</strong>
+                                            <div style="font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="56 Nguyễn Hữu Thọ, Q. Cẩm Lệ"><i class="fa-solid fa-location-dot"></i> 56 Nguyễn Hữu Thọ, Cẩm Lệ</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 12px; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Chăm sóc vết mổ ruột thừa tại nhà">Chăm sóc vết mổ ruột thừa tại nhà</div>
+                                        </td>
+                                        <td class="apt-nurse-cell" style="white-space: nowrap;"><strong style="color: var(--primary);">ĐD. Nguyễn Văn Minh</strong></td>
+                                        <td class="apt-time-cell" style="white-space: nowrap;">
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12px;"><i class="fa-regular fa-clock"></i> 08:00 - 10:30 (Sáng)</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">2026-10-11</div>
+                                        </td>
+                                        <td style="white-space: nowrap;"><span class="badge-status badge-completed">Đã hoàn thành</span></td>
+                                        <td style="white-space: nowrap;">
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 12.5px;">
+                                                <span>4.5</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: #15803d; font-weight: 600; margin-top: 1px;" title="Y tá Minh sát trùng rất kỹ, đến đúng hẹn."><i class="fa-solid fa-check"></i> Hài lòng</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 12px;">
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openChangeAppointmentModal('604', 'Anh Hoàng Minh Trí (45 tuổi)', 'minh', '2026-10-11', '08:00 - 10:30 (Sáng)')" title="Chỉnh sửa ca trực / Đổi lịch">
+                                                <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="apt-row-602">
+                                        <td style="font-weight: 800; color: #0284c7;">#BK-8822</td>
+                                        <td>
+                                            <strong style="font-size: 13px;">Bà Ngô Thị Tuyết (64t)</strong>
+                                            <div style="font-size: 11px; color: var(--text-muted); max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="14 Tôn Đức Thắng, Q. Liên Chiểu"><i class="fa-solid fa-location-dot"></i> 14 Tôn Đức Thắng, Liên Chiểu</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 12px; max-width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Thay băng vết mổ xương đùi">Thay băng vết mổ xương đùi</div>
+                                        </td>
+                                        <td class="apt-nurse-cell" style="white-space: nowrap;"><strong style="color: #ef4444;">Chưa phân công</strong></td>
+                                        <td class="apt-time-cell" style="white-space: nowrap;">
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12px;"><i class="fa-regular fa-clock"></i> 17:00 - 19:00 (Tối)</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">2026-10-11</div>
+                                        </td>
+                                        <td style="white-space: nowrap;"><span class="badge-status badge-pending">Chờ điều phối</span></td>
+                                        <td style="white-space: nowrap;"><span style="font-size: 11.5px; color: var(--text-muted); font-style: italic;"><i class="fa-regular fa-clock"></i> Chưa diễn ra</span></td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 12px;">
+                                            <button class="btn-action-sm btn-assign-sm" onclick="openChangeAppointmentModal('602', 'Bà Ngô Thị Tuyết (64 tuổi)', 'none', '2026-10-11', '17:00 - 19:00 (Tối)')" title="Phân công điều dưỡng nhận ca">
+                                                <i class="fa-solid fa-user-plus"></i> Phân công
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: DANH SÁCH ĐIỀU DƯỠNG & THEO DÕI CA TRỰC ================= -->
+            <div id="tab-nurse-schedules" class="tab-pane">
+                <!-- KHỐI 1: BẢNG DANH SÁCH ĐIỀU DƯỠNG TOÀN HỆ THỐNG (ĐỒNG BỘ ĐÁNH GIÁ SAO & HỒ SƠ) -->
+                <div class="panel-card" style="margin-bottom: 24px;">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-user-nurse" style="color: var(--primary);"></i> Danh Sách Điều Dưỡng & Đánh Giá Chất Lượng Phục Vụ</h3>
+                            <p>Tổng hợp hồ sơ năng lực điều dưỡng, điểm đánh giá sao trung bình từ khách hàng và trạng thái ca trực thực tế</p>
+                        </div>
+                        <div class="panel-actions" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                            <div class="search-input-box" style="min-width: 280px;">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="nurseTableSearchInput" placeholder="Tìm tên (vd: Minh, Mai...), mã ID, quận..." oninput="handleNurseTableSearch(this.value)">
+                            </div>
+                            <span class="badge-status badge-completed"><i class="fa-solid fa-users"></i> 7 Điều dưỡng sẵn sàng</span>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 175px;">Điều Dưỡng</th>
+                                        <th>Chuyên Môn Y Khoa</th>
+                                        <th style="width: 155px;">Khu Vực & KN</th>
+                                        <th style="width: 105px;">Đánh Giá</th>
+                                        <th style="width: 130px;">Trạng Thái Ca</th>
+                                        <th style="text-align: right; width: 140px; padding-right: 12px;">Điều Chỉnh</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="nurseListTableBody">
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300" alt="ĐD. Nguyễn Văn Minh" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                                                <div>
+                                                    <strong style="color: var(--text-main); font-size: 13.5px;">ĐD. Nguyễn Văn Minh</strong>
+                                                    <div style="font-size: 11.5px; color: var(--primary); font-weight: 700;">Mã: DD-0824</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong style="color: var(--primary); font-size: 12.5px;">Khoa Ngoại & Chăm Sóc Vết Mổ</strong>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Điều trị loét tì đè, thay băng vô trùng, tiêm truyền</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12.5px;"><i class="fa-solid fa-location-dot"></i> Hải Châu & T.Khê</div>
+                                            <div style="font-size: 11.5px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 10 năm kinh nghiệm</div>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 13px;">
+                                                <span>4.9</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">128 đánh giá</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status badge-cancelled"><i class="fa-solid fa-lock"></i> Đang có ca</span>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">07:30 - 09:30 (Sáng)</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 14px;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="viewNurseDetailModal('minh')" title="Xem chi tiết hồ sơ"><i class="fa-solid fa-id-card"></i> Hồ sơ</button>
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openNurseScheduleModal('minh')" title="Xem tờ lịch ca trực"><i class="fa-solid fa-calendar-days"></i> Lịch trực</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300" alt="ĐD. Trần Thị Mai" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                                                <div>
+                                                    <strong style="color: var(--text-main); font-size: 13.5px;">ĐD. Trần Thị Mai</strong>
+                                                    <div style="font-size: 11.5px; color: var(--primary); font-weight: 700;">Mã: DD-0828</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong style="color: var(--primary); font-size: 12.5px;">Khoa Ngoại & Chăm Sóc Vết Mổ</strong>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Thay băng vô trùng vết mổ khó, rửa vết thương loét</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12.5px;"><i class="fa-solid fa-location-dot"></i> Hải Châu & Cẩm Lệ</div>
+                                            <div style="font-size: 11.5px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 8 năm kinh nghiệm</div>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 13px;">
+                                                <span>5.0</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">115 đánh giá</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status badge-cancelled"><i class="fa-solid fa-lock"></i> Đang có ca</span>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">14:00 - 16:30 (Chiều)</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 14px;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="viewNurseDetailModal('mai')" title="Xem chi tiết hồ sơ"><i class="fa-solid fa-id-card"></i> Hồ sơ</button>
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openNurseScheduleModal('mai')" title="Xem tờ lịch ca trực"><i class="fa-solid fa-calendar-days"></i> Lịch trực</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="https://images.unsplash.com/photo-1594824813576-905ffeb52317?auto=format&fit=crop&q=80&w=300" alt="ĐD. Trần Thị Lan" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                                                <div>
+                                                    <strong style="color: var(--text-main); font-size: 13.5px;">ĐD. Trần Thị Lan</strong>
+                                                    <div style="font-size: 11.5px; color: var(--primary); font-weight: 700;">Mã: DD-0825</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong style="color: var(--primary); font-size: 12.5px;">Nhi Khoa & Ống Sonde Dạ Dày</strong>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Cho ăn ống Sonde, truyền dịch, chăm sóc mẹ & bé</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12.5px;"><i class="fa-solid fa-location-dot"></i> Hải Châu & T.Khê</div>
+                                            <div style="font-size: 11.5px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 8 năm kinh nghiệm</div>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 13px;">
+                                                <span>5.0</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">95 đánh giá</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status badge-completed"><i class="fa-solid fa-circle-check"></i> Sẵn sàng nhận ca</span>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Đang rảnh hôm nay</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 14px;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="viewNurseDetailModal('lan')" title="Xem chi tiết hồ sơ"><i class="fa-solid fa-id-card"></i> Hồ sơ</button>
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openNurseScheduleModal('lan')" title="Xem tờ lịch ca trực"><i class="fa-solid fa-calendar-days"></i> Lịch trực</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=300" alt="BS. Lê Hoàng Quân" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0;">
+                                                <div>
+                                                    <strong style="color: var(--text-main); font-size: 13.5px;">BS. Lê Hoàng Quân</strong>
+                                                    <div style="font-size: 11.5px; color: var(--primary); font-weight: 700;">Mã: BS-0412</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong style="color: var(--primary); font-size: 12.5px;">Phục Hồi Chức Năng Tai Biến</strong>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); max-width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Vật lý trị liệu tai biến, tập đi sau phẫu thuật mổ</div>
+                                        </td>
+                                        <td>
+                                            <div style="font-weight: 700; color: #0284c7; font-size: 12.5px;"><i class="fa-solid fa-location-dot"></i> Sơn Trà & N.H.Sơn</div>
+                                            <div style="font-size: 11.5px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 15 năm kinh nghiệm</div>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800; font-size: 13px;">
+                                                <span>4.9</span> <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">110 đánh giá</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status badge-cancelled"><i class="fa-solid fa-lock"></i> Đang có ca</span>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">08:00 - 10:30 (Sáng)</div>
+                                        </td>
+                                        <td style="text-align: right; white-space: nowrap; padding-right: 14px;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="viewNurseDetailModal('quan')" title="Xem chi tiết hồ sơ"><i class="fa-solid fa-id-card"></i> Hồ sơ</button>
+                                            <button class="btn-action-sm btn-primary-sm" onclick="openNurseScheduleModal('quan')" title="Xem tờ lịch ca trực"><i class="fa-solid fa-calendar-days"></i> Lịch trực</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB MỚI: THẨM ĐỊNH & DUYỆT BẰNG CẤP ĐIỀU DƯỠNG ================= -->
+            <div id="tab-verify-certs" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-user-graduate" style="color: var(--accent-emerald);"></i> Thẩm Định & Phê Duyệt Bằng Cấp / Chứng Chỉ Hành Nghề</h3>
+                            <p>Nhân viên vận hành kiểm tra tính pháp lý của chứng chỉ hành nghề, bằng cấp y khoa trước khi cho Y tá nhận ca</p>
+                        </div>
+                        <div class="panel-actions">
+                            <span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> 3 chứng chỉ chờ duyệt</span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Điều dưỡng nộp</th>
+                                        <th>Tên bằng cấp / Chứng chỉ</th>
+                                        <th>Cơ quan cấp & Số hiệu</th>
+                                        <th>Tệp đính kèm</th>
+                                        <th>Trạng thái</th>
+                                        <th style="text-align: right;">Hành động thẩm định</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="cert-row-1">
+                                        <td>
+                                            <strong>ĐD. Nguyễn Văn Minh</strong>
+                                            <small style="display:block; color:var(--text-muted);">Mã DD-0824 • Hải Châu</small>
+                                        </td>
+                                        <td>
+                                            <strong style="color:var(--text-main);">Chứng chỉ hành nghề khám bệnh, chữa bệnh chuyên khoa Điều Dưỡng</strong>
+                                            <div style="font-size:12px; color:var(--text-muted);">Hạng mục: Tiêm truyền, thay băng, chăm sóc vết thương</div>
+                                        </td>
+                                        <td>
+                                            <div>Sở Y Tế TP. Đà Nẵng</div>
+                                            <small style="color:var(--primary); font-weight:700;">Số: 004821/DNA-CCHN</small>
+                                        </td>
+                                        <td>
+                                            <a href="#" style="color:var(--primary); font-weight:700; text-decoration:none;"><i class="fa-solid fa-file-pdf"></i> ChungChi_Minh.pdf</a>
+                                        </td>
+                                        <td><span class="badge-status badge-completed"><i class="fa-solid fa-circle-check"></i> Đã phê duyệt</span></td>
+                                        <td style="text-align: right;" class="cert-actions">
+                                            <span style="color:#15803d; font-weight:800; font-size:12.5px;"><i class="fa-solid fa-shield-check"></i> Đã thẩm định hợp lệ</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr id="cert-row-2">
+                                        <td>
+                                            <strong>ĐD. Hoàng Thu Thảo</strong>
+                                            <small style="display:block; color:var(--text-muted);">Mã DD-0915 • Ngũ Hành Sơn</small>
+                                        </td>
+                                        <td>
+                                            <strong style="color:var(--text-main);">Chứng chỉ hồi sức cấp cứu & Hỗ trợ thở oxy tại nhà</strong>
+                                            <div style="font-size:12px; color:var(--text-muted);">Cấp cứu hô hấp, đặt ống sonde, quản lý máy SpO2</div>
+                                        </td>
+                                        <td>
+                                            <div>Bệnh viện C Đà Nẵng</div>
+                                            <small style="color:var(--primary); font-weight:700;">Số: 1192/BVC-HSCC</small>
+                                        </td>
+                                        <td>
+                                            <a href="#" style="color:var(--primary); font-weight:700; text-decoration:none;"><i class="fa-solid fa-image"></i> ChungChi_Thao_HSCC.jpg</a>
+                                        </td>
+                                        <td><span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Chờ duyệt</span></td>
+                                        <td style="text-align: right;" class="cert-actions">
+                                            <button class="btn-action-sm btn-success-sm" onclick="verifyNurseCert('2', 'ĐD. Hoàng Thu Thảo', 'Chứng chỉ hồi sức cấp cứu & Thở oxy')">
+                                                <i class="fa-solid fa-check"></i> Phê duyệt
+                                            </button>
+                                            <button class="btn-action-sm btn-danger-sm" onclick="rejectNurseCert('2', 'ĐD. Hoàng Thu Thảo', 'Chứng chỉ hồi sức cấp cứu')">
+                                                <i class="fa-solid fa-xmark"></i> Yêu cầu bổ sung
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <tr id="cert-row-3">
+                                        <td>
+                                            <strong>ĐD. Đặng Quốc Bảo</strong>
+                                            <small style="display:block; color:var(--text-muted);">Mã DD-1042 • Cẩm Lệ</small>
+                                        </td>
+                                        <td>
+                                            <strong style="color:var(--text-main);">Bằng Cử Nhân Điều Dưỡng Đa Khoa</strong>
+                                            <div style="font-size:12px; color:var(--text-muted);">Hệ chính quy 4 năm - Xếp loại Khá</div>
+                                        </td>
+                                        <td>
+                                            <div>Trường Đại học Kỹ thuật Y Dược Đà Nẵng</div>
+                                            <small style="color:var(--primary); font-weight:700;">Số hiệu bằng: 45019/YDDN</small>
+                                        </td>
+                                        <td>
+                                            <a href="#" style="color:var(--primary); font-weight:700; text-decoration:none;"><i class="fa-solid fa-file-pdf"></i> BangCuNhan_Bao.pdf</a>
+                                        </td>
+                                        <td><span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Chờ duyệt</span></td>
+                                        <td style="text-align: right;" class="cert-actions">
+                                            <button class="btn-action-sm btn-success-sm" onclick="verifyNurseCert('3', 'ĐD. Đặng Quốc Bảo', 'Bằng Cử Nhân Điều Dưỡng Đa Khoa')">
+                                                <i class="fa-solid fa-check"></i> Phê duyệt
+                                            </button>
+                                            <button class="btn-action-sm btn-danger-sm" onclick="rejectNurseCert('3', 'ĐD. Đặng Quốc Bảo', 'Bằng Cử Nhân')">
+                                                <i class="fa-solid fa-xmark"></i> Yêu cầu bổ sung
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB MỚI: DUYỆT HỒ SƠ TUYỂN DỤNG (CV) ================= -->
+            <div id="tab-recruitment-cv" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-file-invoice" style="color: var(--primary);"></i> Thẩm Định & Duyệt Hồ Sơ Tuyển Dụng Điều Dưỡng (CV Ứng Tuyển)</h3>
+                            <p>Xem xét hồ sơ CV, đánh giá năng lực chuyên môn và xếp lịch phỏng vấn tuyển dụng điều dưỡng viên mới</p>
+                        </div>
+                        <div class="panel-actions">
+                            <div class="search-input-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" placeholder="Tìm ứng viên, SĐT, vị trí...">
+                            </div>
+                            <select class="form-select-sm">
+                                <option>Tất cả trạng thái hồ sơ</option>
+                                <option>Chờ duyệt hồ sơ</option>
+                                <option>Đã mời phỏng vấn</option>
+                                <option>Trúng tuyển</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã CV</th>
+                                        <th>Ứng viên & Liên hệ</th>
+                                        <th>Vị trí ứng tuyển</th>
+                                        <th>Trình độ chuyên môn & Kinh nghiệm</th>
+                                        <th>File CV đính kèm</th>
+                                        <th>Trạng thái hồ sơ</th>
+                                        <th style="text-align: right;">Thao tác duyệt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="cv-row-101">
+                                        <td><strong>#CV-2026-01</strong></td>
+                                        <td>
+                                            <strong>Lê Thảo Nhi (26 tuổi)</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0905 889 112 • lethao.nhi@gmail.com</div>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed">Điều dưỡng đa khoa tại nhà</span></td>
+                                        <td>
+                                            <div><strong>Cử nhân ĐH Y Dược Đà Nẵng</strong></div>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 3 năm tại BV Đà Nẵng</div>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="previewCVModal('Lê Thảo Nhi', 'Điều dưỡng đa khoa tại nhà', '3 năm')" class="btn-action-sm btn-outline-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Xem CV.pdf
+                                            </a>
+                                        </td>
+                                        <td><span id="cv-status-101" class="badge-status badge-pending">Chờ sơ loại</span></td>
+                                        <td style="text-align: right; white-space: nowrap;">
+                                            <button class="btn-action-sm btn-primary-sm" onclick="approveCandidateCV('101', 'Lê Thảo Nhi')">
+                                                <i class="fa-solid fa-calendar-check"></i> Mời phỏng vấn
+                                            </button>
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Lê Thảo Nhi', '0905889112')">
+                                                <i class="fa-solid fa-phone"></i> Gọi điện
+                                            </button>
+                                            <button class="btn-action-sm btn-danger-sm" onclick="rejectCandidateCV('101', 'Lê Thảo Nhi')">
+                                                <i class="fa-solid fa-xmark"></i> Từ chối
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="cv-row-102">
+                                        <td><strong>#CV-2026-02</strong></td>
+                                        <td>
+                                            <strong>Phan Quốc Huy (29 tuổi)</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0914 223 998 • quochuy.pt@gmail.com</div>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed">Kỹ thuật viên Vật lý trị liệu</span></td>
+                                        <td>
+                                            <div><strong>Cử nhân Phục hồi chức năng ĐH Y Dược Huế</strong></div>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 5 năm kinh nghiệm điều trị tai biến</div>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="previewCVModal('Phan Quốc Huy', 'KTV Vật lý trị liệu', '5 năm')" class="btn-action-sm btn-outline-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Xem CV.pdf
+                                            </a>
+                                        </td>
+                                        <td><span id="cv-status-102" class="badge-status badge-active">Đã mời PV ngày 12/10</span></td>
+                                        <td style="text-align: right; white-space: nowrap;">
+                                            <button class="btn-action-sm btn-primary-sm" style="background:#16a34a;" onclick="acceptCandidate('102', 'Phan Quốc Huy')">
+                                                <i class="fa-solid fa-check"></i> Trúng tuyển
+                                            </button>
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Phan Quốc Huy', '0914223998')">
+                                                <i class="fa-solid fa-phone"></i> Gọi điện
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="cv-row-103">
+                                        <td><strong>#CV-2026-03</strong></td>
+                                        <td>
+                                            <strong>Trần Thúy Hằng (24 tuổi)</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0987 654 321 • hang.tran@gmail.com</div>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed">Chăm sóc mẹ & bé sơ sinh</span></td>
+                                        <td>
+                                            <div><strong>Cao đẳng Y tế Quân Dân Y</strong></div>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-briefcase"></i> 2 năm tại BV Sản Nhi</div>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="previewCVModal('Trần Thúy Hằng', 'Chăm sóc mẹ & bé', '2 năm')" class="btn-action-sm btn-outline-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i> Xem CV.pdf
+                                            </a>
+                                        </td>
+                                        <td><span id="cv-status-103" class="badge-status badge-pending">Chờ sơ loại</span></td>
+                                        <td style="text-align: right; white-space: nowrap;">
+                                            <button class="btn-action-sm btn-primary-sm" onclick="approveCandidateCV('103', 'Trần Thúy Hằng')">
+                                                <i class="fa-solid fa-calendar-check"></i> Mời phỏng vấn
+                                            </button>
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Trần Thúy Hằng', '0987654321')">
+                                                <i class="fa-solid fa-phone"></i> Gọi điện
+                                            </button>
+                                            <button class="btn-action-sm btn-danger-sm" onclick="rejectCandidateCV('103', 'Trần Thúy Hằng')">
+                                                <i class="fa-solid fa-xmark"></i> Từ chối
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3: QUẢN LÝ KHO THIẾT BỊ ================= -->
+            <div id="tab-inventory" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i> Quản Lý Kho Sản Phẩm & Thiết Bị Y Tế</h3>
+                            <p>Cập nhật số lượng tồn kho, giá bán, giá thuê và thêm sản phẩm y tế mới</p>
+                        </div>
+                        <div class="panel-actions">
+                            <button class="btn-primary" onclick="openAddProductModal()">
+                                <i class="fa-solid fa-plus"></i> Thêm sản phẩm / Thiết bị mới
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã SP</th>
+                                        <th>Tên thiết bị / Thuốc</th>
+                                        <th>Loại hàng</th>
+                                        <th>Đơn giá</th>
+                                        <th>Tồn kho</th>
+                                        <th style="text-align: right;">Điều chỉnh</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="inv-row-TB-OXY40">
+                                        <td><strong>#TB-OXY40</strong></td>
+                                        <td><strong id="prod-name-TB-OXY40">Bình Oxy Y Tế 40 Lít (Kèm đồng hồ & dây thở)</strong></td>
+                                        <td><span class="badge-status badge-confirmed">Cho thuê</span></td>
+                                        <td><strong id="prod-price-TB-OXY40" style="color: var(--primary);">200.000đ / ngày</strong></td>
+                                        <td><strong id="prod-stock-TB-OXY40">14 bình</strong> sẵn sàng</td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openEditProductModal('TB-OXY40', 'Bình Oxy Y Tế 40 Lít (Kèm đồng hồ & dây thở)', 'Cho thuê', '200.000đ / ngày', '14 bình sẵn sàng')"><i class="fa-solid fa-pen"></i> Sửa</button>
+                                        </td>
+                                    </tr>
+                                    <tr id="inv-row-TB-OXY10">
+                                        <td><strong>#TB-OXY10</strong></td>
+                                        <td><strong id="prod-name-TB-OXY10">Bình Oxy Y Tế Mini 10 Lít Tận Nhà</strong></td>
+                                        <td><span class="badge-status badge-confirmed">Cho thuê</span></td>
+                                        <td><strong id="prod-price-TB-OXY10" style="color: var(--primary);">120.000đ / ngày</strong></td>
+                                        <td><strong id="prod-stock-TB-OXY10">22 bình</strong> sẵn sàng</td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openEditProductModal('TB-OXY10', 'Bình Oxy Y Tế Mini 10 Lít Tận Nhà', 'Cho thuê', '120.000đ / ngày', '22 bình sẵn sàng')"><i class="fa-solid fa-pen"></i> Sửa</button>
+                                        </td>
+                                    </tr>
+                                    <tr id="inv-row-TPCN-XK01">
+                                        <td><strong>#TPCN-XK01</strong></td>
+                                        <td><strong id="prod-name-TPCN-XK01">TPCN Hỗ Trợ Xương Khớp Glucosamine 1500mg</strong></td>
+                                        <td><span class="badge-status badge-completed">Bán lẻ</span></td>
+                                        <td><strong id="prod-price-TPCN-XK01" style="color: var(--primary);">350.000đ / hộp</strong></td>
+                                        <td><strong id="prod-stock-TPCN-XK01">85 hộp</strong></td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openEditProductModal('TPCN-XK01', 'TPCN Hỗ Trợ Xương Khớp Glucosamine 1500mg', 'Bán lẻ', '350.000đ / hộp', '85 hộp')"><i class="fa-solid fa-pen"></i> Sửa</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 4: MUA, THUÊ THIẾT BỊ ================= -->
+            <div id="tab-equipment-orders" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-cart-flatbed" style="color: var(--primary);"></i> Mua, Thuê Thiết Bị</h3>
+                            <p>Theo dõi các đơn thuê bình oxy, máy y tế & mua thuốc/TPCN và thời hạn thuê thiết bị</p>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã đơn</th>
+                                        <th>Khách hàng</th>
+                                        <th>Sản phẩm / Thiết bị</th>
+                                        <th>Hình thức</th>
+                                        <th>Thanh toán / Cọc</th>
+                                        <th>Địa chỉ nhận hàng</th>
+                                        <th>Thời hạn thuê (Ngày hết hạn)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="rental-row-701">
+                                        <td><strong>#TH-1091</strong></td>
+                                        <td>
+                                            <strong>Nguyễn Thị Hương</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0905 444 333</div>
+                                        </td>
+                                        <td>
+                                            <strong>Bình Oxy 40L (Gói thuê 7 ngày)</strong>
+                                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 700;"><i class="fa-solid fa-check"></i> Đủ tồn kho (Kho còn 14 bình)</div>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed"><i class="fa-solid fa-clock-rotate-left"></i> Thuê thiết bị</span></td>
+                                        <td><strong style="color: #10b981;">2.000.000đ (Đã cọc)</strong></td>
+                                        <td>42 Nguyễn Văn Linh, Q. Hải Châu</td>
+                                        <td>
+                                            <strong style="color: var(--text-main);">18/10/2026</strong>
+                                            <div style="margin-top: 3px;">
+                                                <span class="badge-status badge-active" style="font-size: 11.5px; font-weight: 700;">
+                                                    <i class="fa-solid fa-clock"></i> Còn hạn (Còn 7 ngày)
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="rental-row-702">
+                                        <td><strong>#TH-1092</strong></td>
+                                        <td>
+                                            <strong>Phan Bá Trực</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0978 112 233</div>
+                                        </td>
+                                        <td>
+                                            <strong>Máy Hút Đờm Y Tế Yuwell 7E-A</strong>
+                                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 700;"><i class="fa-solid fa-check"></i> Đủ tồn kho (Kho còn 6 máy)</div>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed"><i class="fa-solid fa-clock-rotate-left"></i> Thuê thiết bị</span></td>
+                                        <td><strong style="color: #10b981;">1.500.000đ (Đã cọc)</strong></td>
+                                        <td>180 Dũng Sĩ Thanh Khê, Q. Thanh Khê</td>
+                                        <td>
+                                            <strong style="color: #ef4444;">09/10/2026</strong>
+                                            <div style="margin-top: 3px;">
+                                                <span class="badge-status badge-pending" style="font-size: 11.5px; color: #ef4444; font-weight: 700;">
+                                                    <i class="fa-solid fa-triangle-exclamation"></i> Quá hạn (Quá 2 ngày)
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="rental-row-704">
+                                        <td><strong>#TH-1093</strong></td>
+                                        <td>
+                                            <strong>Lê Đình Tuấn</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0905 667 889</div>
+                                        </td>
+                                        <td>
+                                            <strong>Máy Tạo Oxy Y Tế Yuwell 5L</strong>
+                                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 700;"><i class="fa-solid fa-check"></i> Đang sử dụng tại nhà</div>
+                                        </td>
+                                        <td><span class="badge-status badge-confirmed"><i class="fa-solid fa-clock-rotate-left"></i> Thuê thiết bị</span></td>
+                                        <td><strong style="color: #10b981;">2.500.000đ (Đã cọc)</strong></td>
+                                        <td>42 Lê Duẩn, Q. Hải Châu</td>
+                                        <td>
+                                            <strong style="color: #d97706;">11/10/2026</strong>
+                                            <div style="margin-top: 3px;">
+                                                <span class="badge-status badge-warning" style="font-size: 11.5px; font-weight: 700;">
+                                                    <i class="fa-solid fa-hourglass-half"></i> Hết hạn hôm nay
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="rental-row-703">
+                                        <td><strong>#ORD-9921</strong></td>
+                                        <td>
+                                            <strong>Nguyễn Văn An</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0908 786 168</div>
+                                        </td>
+                                        <td>
+                                            <strong>TPCN Hỗ Trợ Xương Khớp Glucosamine (x1)</strong>
+                                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 700;"><i class="fa-solid fa-check"></i> Đủ tồn kho (Kho còn 85 hộp)</div>
+                                        </td>
+                                        <td><span class="badge-status badge-active"><i class="fa-solid fa-basket-shopping"></i> Mua hàng</span></td>
+                                        <td><strong style="color: var(--primary);">350.000đ (Đã thanh toán)</strong></td>
+                                        <td>Lô 02-B2-05 Hoàng Trung Thông, Q. Liên Chiểu</td>
+                                        <td>
+                                            <span style="color: var(--text-muted); font-size: 12.5px; font-style: italic;">— (Đơn mua đứt)</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 5: THU HỒI & HOÀN CỌC ================= -->
+            <div id="tab-equipment-return" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-rotate-left" style="color: var(--primary);"></i> Quản Lý Trả Thiết Bị & Hoàn Trả Cọc</h3>
+                            <p>Kiểm tra tình trạng thiết bị khi khách trả (nguyên vẹn/hỏng hóc) và giải ngân tiền đặt cọc</p>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã hợp đồng</th>
+                                        <th>Khách hàng</th>
+                                        <th>Thiết bị đang thuê</th>
+                                        <th>Thời hạn hợp đồng</th>
+                                        <th>Tiền cọc giữ</th>
+                                        <th>Lý do & Tình trạng thu hồi</th>
+                                        <th style="text-align: right;">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="return-row-801">
+                                        <td><strong>#HD-RENT-55</strong></td>
+                                        <td>
+                                            <strong>Lê Đình Tuấn</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);">0905 667 889</div>
+                                        </td>
+                                        <td>Bình Oxy 40L + Đồng hồ thở</td>
+                                        <td>
+                                            <div><strong>20/10/2026</strong></div>
+                                            <small style="color: #0284c7; font-weight: 700;"><i class="fa-solid fa-info-circle"></i> Còn 9 ngày hạn thuê</small>
+                                        </td>
+                                        <td><strong style="color: #10b981;">2.000.000đ</strong></td>
+                                        <td>
+                                            <span class="badge-status badge-active" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">
+                                                <i class="fa-solid fa-forward-step"></i> Khách yêu cầu trả sớm (Chưa hết hạn)
+                                            </span>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 3px;">Khách chủ động báo trả trước hạn do người nhà đã khỏe</div>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-primary-sm btn-process-return" onclick="openReturnModal('801', 'Lê Đình Tuấn', 'Bình Oxy 40L + Đồng hồ', '2.000.000đ')">
+                                                <i class="fa-solid fa-clipboard-check"></i> Nghiệm thu & Hoàn cọc
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="return-row-803">
+                                        <td><strong>#HD-RENT-57</strong></td>
+                                        <td>
+                                            <strong>Trần Quốc Toàn</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);">0905 332 114</div>
+                                        </td>
+                                        <td>Giường Y Tế Nâng Hạ Lucass</td>
+                                        <td>
+                                            <div><strong style="color: #d97706;">11/10/2026</strong></div>
+                                            <small style="color: #d97706; font-weight: 700;"><i class="fa-solid fa-hourglass-half"></i> Hết hạn hôm nay</small>
+                                        </td>
+                                        <td><strong style="color: #10b981;">3.000.000đ</strong></td>
+                                        <td>
+                                            <span class="badge-status badge-warning" style="font-weight: 700;">
+                                                <i class="fa-solid fa-hourglass-end"></i> Đến hạn thu hồi (Hết hạn HĐ)
+                                            </span>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 3px;">Hết hạn gói thuê 30 ngày theo lịch</div>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-primary-sm btn-process-return" onclick="openReturnModal('803', 'Trần Quốc Toàn', 'Giường Y Tế Lucass', '3.000.000đ')">
+                                                <i class="fa-solid fa-clipboard-check"></i> Nghiệm thu & Hoàn cọc
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="return-row-802">
+                                        <td><strong>#HD-RENT-56</strong></td>
+                                        <td>
+                                            <strong>Bùi Quang Huy</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);">0935 124 578</div>
+                                        </td>
+                                        <td>Máy Tạo Oxy 5 Lít Philips</td>
+                                        <td>
+                                            <div><strong style="color: #ef4444;">09/10/2026</strong></div>
+                                            <small style="color: #ef4444; font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> Quá hạn 2 ngày</small>
+                                        </td>
+                                        <td><strong style="color: #10b981;">3.500.000đ</strong></td>
+                                        <td>
+                                            <span class="badge-status badge-pending" style="color: #ef4444; font-weight: 700;">
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Quá hạn hợp đồng (Đã nhận lại tại kho)
+                                            </span>
+                                            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 3px;">KTV đã nhận máy về kho, chờ kiểm tra để hoàn cọc</div>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action-sm btn-primary-sm btn-process-return" onclick="openReturnModal('802', 'Bùi Quang Huy', 'Máy Tạo Oxy 5L Philips', '3.500.000đ')">
+                                                <i class="fa-solid fa-clipboard-check"></i> Nghiệm thu & Hoàn cọc
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 6: MÃ GIẢM GIÁ ================= -->
+            <div id="tab-discounts" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-tags" style="color: var(--primary);"></i> Quản Lý Mã Giảm Giá & Khuyến Mãi</h3>
+                            <p>Tạo chương trình ưu đãi cho các sản phẩm thực phẩm chức năng, thiết bị y khoa hoặc gói chăm sóc</p>
+                        </div>
+                        <div class="panel-actions">
+                            <button class="btn-primary" onclick="openAddDiscountModal()">
+                                <i class="fa-solid fa-plus"></i> Tạo mã giảm giá mới
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Voucher</th>
+                                        <th>Mức giảm</th>
+                                        <th>Áp dụng cho</th>
+                                        <th>Thời hạn</th>
+                                        <th>Lượt sử dụng</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong style="color: var(--primary); font-size: 15px;">BBCAREHEALTH</strong></td>
+                                        <td><strong style="color: #ef4444;">-15%</strong></td>
+                                        <td>Tất cả Thực phẩm chức năng xương khớp & Vitamin</td>
+                                        <td>30/09/2026</td>
+                                        <td><strong>42 / 100</strong></td>
+                                        <td><span class="badge-status badge-active">Đang áp dụng</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong style="color: var(--primary); font-size: 15px;">THUEOXY10</strong></td>
+                                        <td><strong style="color: #ef4444;">-10%</strong></td>
+                                        <td>Thuê bình Oxy từ 5 ngày trở lên</td>
+                                        <td>15/10/2026</td>
+                                        <td><strong>18 / 50</strong></td>
+                                        <td><span class="badge-status badge-active">Đang áp dụng</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 7: PHẢN HỒI & KHIẾU NẠI ================= -->
+            <div id="tab-feedback" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-comments" style="color: var(--primary);"></i> Quản Lý Khiếu Nại & Đánh Giá Khách Hàng</h3>
+                            <p>Xem xét báo cáo sự cố y tế, góp ý dịch vụ và xử lý hỗ trợ người bệnh kịp thời</p>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã phản hồi</th>
+                                        <th>Khách hàng</th>
+                                        <th>Ca khám liên quan</th>
+                                        <th>Nội dung góp ý / Báo cáo</th>
+                                        <th>Đánh giá</th>
+                                        <th>Trạng thái</th>
+                                        <th style="text-align: right;">Xử lý</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="staffFeedbackTableBody">
+                                    <tr id="feedback-row-FB-201">
+                                        <td><strong>#FB-201</strong><div style="font-size:11px;color:var(--text-muted);">10/10/2026 14:20</div></td>
+                                        <td>
+                                            <strong>Anh Nguyễn Minh Khang</strong>
+                                            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> 0905 112 999</div>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status badge-confirmed" style="font-size:12px;">Ca trực #CA-8876 (ĐD. Minh)</span>
+                                            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">Loại: Góp ý dịch vụ</div>
+                                        </td>
+                                        <td style="max-width: 320px;">
+                                            <div style="font-style: italic; color: var(--text-main); font-size: 13.5px;">"Điều dưỡng tới trễ 10 phút do kẹt xe nhưng thao tác thay băng rất cẩn thận, dặn dò gia đình kỹ lưỡng."</div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <i class="fa-solid fa-star" style="color: #f59e0b; font-size: 12px;"></i>
+                                                <i class="fa-solid fa-star" style="color: #f59e0b; font-size: 12px;"></i>
+                                                <i class="fa-solid fa-star" style="color: #f59e0b; font-size: 12px;"></i>
+                                                <i class="fa-solid fa-star" style="color: #f59e0b; font-size: 12px;"></i>
+                                                <i class="fa-solid fa-star" style="color: #cbd5e1; font-size: 12px;"></i>
+                                            </div>
+                                            <span style="font-size: 12px; font-weight: 700; color: #f59e0b;">4/5 sao</span>
+                                        </td>
+                                        <td><span class="badge-status badge-pending"><i class="fa-solid fa-clock"></i> Chờ phản hồi</span></td>
+                                        <td style="text-align: right; white-space: nowrap;">
+                                            <button class="btn-action-sm btn-outline-sm" onclick="openContactClientModal('Anh Nguyễn Minh Khang', '0905112999')">
+                                                <i class="fa-solid fa-phone"></i> Gọi khách
+                                            </button>
+                                            <button class="btn-action-sm btn-success-sm btn-resolve-fb" onclick="resolveFeedback('FB-201', 'Anh Nguyễn Minh Khang')">
+                                                <i class="fa-solid fa-check"></i> Đã giải quyết
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 8: BÁO CÁO NGÀY ================= -->
+            <div id="tab-daily-reports" class="tab-pane">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <div class="panel-title-box">
+                            <h3><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Tạo Báo Cáo Ngày & Xử Lý Đơn Hàng</h3>
+                            <p>Tổng kết số lượng ca trực, đơn thuê bình oxy, sản phẩm bán lẻ và doanh số trong ngày</p>
+                        </div>
+                        <button class="btn-primary" onclick="generateDailyReport()">
+                            <i class="fa-solid fa-download"></i> Xuất file Excel Báo Cáo Ngày
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px;">
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 13px; color: var(--text-muted); font-weight: 700;">TỔNG CA ĐIỀU DƯỠNG HOÀN TẤT</div>
+                                <div style="font-size: 28px; font-weight: 900; color: var(--primary); margin: 6px 0;">18 ca</div>
+                                <div style="font-size: 12.5px; color: #10b981;"><i class="fa-solid fa-arrow-up"></i> Doanh thu ca: 6.300.000đ</div>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 13px; color: var(--text-muted); font-weight: 700;">ĐƠN THUÊ BÌNH OXY PHÁT SINH</div>
+                                <div style="font-size: 28px; font-weight: 900; color: #f97316; margin: 6px 0;">8 đơn</div>
+                                <div style="font-size: 12.5px; color: #10b981;"><i class="fa-solid fa-arrow-up"></i> Doanh thu thuê: 1.600.000đ</div>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 13px; color: var(--text-muted); font-weight: 700;">TỔNG DOANH SỐ TRONG NGÀY</div>
+                                <div style="font-size: 28px; font-weight: 900; color: #0f172a; margin: 6px 0;">12.750.000đ</div>
+                                <div style="font-size: 12.5px; color: #10b981;"><i class="fa-solid fa-check"></i> Đã đối soát ngân hàng 100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- ================= MODALS FOR STAFF ================= -->
+
+
+<!-- Modal Equipment Return & Deposit -->
+<div id="equipmentReturnModal" class="portal-modal">
+    <div class="modal-content-card">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-rotate-left" style="color: var(--primary);"></i> Nghiệm Thu Thiết Bị & Hoàn Trả Cọc</h3>
+            <button class="modal-close-btn" onclick="closeModal('equipmentReturnModal')">✕</button>
+        </div>
+        <form onsubmit="submitEquipmentReturn(event)">
+            <input type="hidden" id="returnModalId">
+            <div class="modal-body-scroll">
+                <p>Khách hàng: <strong id="returnModalCustomer">Khách hàng</strong></p>
+                <p>Thiết bị thu hồi: <strong id="returnModalEquip" style="color: var(--primary);">Bình Oxy 40L</strong></p>
+                <p>Số tiền đặt cọc ban đầu: <strong id="returnModalDeposit" style="color: #10b981;">2.000.000đ</strong></p>
+
+                <div class="form-group-custom" style="margin-top: 16px;">
+                    <label>Tình trạng thiết bị khi nhận lại *</label>
+                    <select id="returnCondition" class="form-control-custom" required>
+                        <option value="Nguyên vẹn hoạt động tốt">Nguyên vẹn, áp kế tốt, không móp méo</option>
+                        <option value="Hao mòn dây thở bình thường">Hao mòn nhẹ phụ kiện dây thở</option>
+                        <option value="Hỏng van hoặc đồng hồ đo">Hỏng hóc van khóa (Cần trừ phí phụ kiện)</option>
+                    </select>
+                </div>
+
+                <div class="form-group-custom">
+                    <label>Số tiền thực tế hoàn cọc lại cho khách (VNĐ) *</label>
+                    <input type="text" id="returnRefundAmt" class="form-control-custom" value="2.000.000đ" required>
+                </div>
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-secondary" onclick="closeModal('equipmentReturnModal')">Hủy</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Xác nhận hoàn cọc & Nhập kho</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Add Product -->
+<div id="addProductModal" class="portal-modal">
+    <div class="modal-content-card">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-box" style="color: var(--primary);"></i> Thêm Sản Phẩm / Thiết Bị Mới Vào Kho</h3>
+            <button class="modal-close-btn" onclick="closeModal('addProductModal')">✕</button>
+        </div>
+        <form onsubmit="submitAddProduct(event)">
+            <div class="modal-body-scroll">
+                <div class="form-group-custom">
+                    <label>Tên sản phẩm / Thiết bị y tế *</label>
+                    <input type="text" id="prodName" class="form-control-custom" placeholder="Ví dụ: Máy Đo SpO2 Cầm Tay Yuwell" required>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label>Phân loại hàng *</label>
+                        <select id="prodType" class="form-control-custom" required>
+                            <option value="rental">Thiết bị cho thuê (Bình oxy, máy thở...)</option>
+                            <option value="supplement">Thực phẩm chức năng</option>
+                            <option value="medical_gear">Vật tư y tế / Dụng cụ</option>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label>Đơn giá bán hoặc thuê (VNĐ) *</label>
+                        <input type="text" id="prodPrice" class="form-control-custom" placeholder="250.000đ" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-secondary" onclick="closeModal('addProductModal')">Hủy</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Thêm vào kho</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Add Discount -->
+<div id="addDiscountModal" class="portal-modal">
+    <div class="modal-content-card">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-ticket" style="color: var(--primary);"></i> Tạo Mã Giảm Giá Mới</h3>
+            <button class="modal-close-btn" onclick="closeModal('addDiscountModal')">✕</button>
+        </div>
+        <form onsubmit="submitAddDiscount(event)">
+            <div class="modal-body-scroll">
+                <div class="form-group-custom">
+                    <label>Mã giảm giá (Code) *</label>
+                    <input type="text" id="discountCode" class="form-control-custom" placeholder="TRIAN10, OXY2026..." style="text-transform: uppercase;" required>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label>Mức giảm (%) *</label>
+                        <input type="number" id="discountPercent" class="form-control-custom" min="1" max="100" value="10" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label>Ngày hết hạn *</label>
+                        <input type="date" id="discountExpire" class="form-control-custom" value="2026-10-31" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-secondary" onclick="closeModal('addDiscountModal')">Hủy</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Kích hoạt mã giảm giá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Contact Client -->
+<div id="contactClientModal" class="portal-modal">
+    <div class="modal-content-card" style="max-width: 500px;">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-phone-volume" style="color: var(--primary);"></i> Liên Hệ Khách Hàng</h3>
+            <button class="modal-close-btn" onclick="closeModal('contactClientModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+            <p style="margin-bottom: 14px;">Khách hàng: <strong id="contactModalClientName">Khách Hàng</strong></p>
+            <div style="text-align: center; margin: 20px 0;">
+                <h2 id="contactModalPhone" style="color: var(--primary); font-size: 28px; font-weight: 900; letter-spacing: 1px;">0905 123 456</h2>
+                <div style="margin-top: 16px;">
+                    <a id="contactCallLink" href="tel:0905123456" class="btn-primary" style="text-decoration: none; display: inline-flex;">
+                        <i class="fa-solid fa-phone"></i> Gọi điện tư vấn trực tiếp
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer-bar">
+            <button class="btn-secondary" onclick="closeModal('contactClientModal')">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Product (Điều Chỉnh Sản Phẩm / Thiết Bị Kho) -->
+<div id="editProductModal" class="portal-modal">
+    <div class="modal-content-card">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-pen-to-square" style="color: var(--primary);"></i> Điều Chỉnh Sản Phẩm / Thiết Bị Kho</h3>
+            <button class="modal-close-btn" onclick="closeModal('editProductModal')">✕</button>
+        </div>
+        <form onsubmit="submitEditProduct(event)">
+            <input type="hidden" id="editProdId">
+            <div class="modal-body-scroll">
+                <div class="form-group-custom">
+                    <label>Mã sản phẩm:</label>
+                    <input type="text" id="editProdCode" class="form-control-custom" readonly style="background:#f1f5f9;font-weight:700;">
+                </div>
+                <div class="form-group-custom">
+                    <label>Tên thiết bị / Thuốc / TPCN *</label>
+                    <input type="text" id="editProdName" class="form-control-custom" required>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group-custom">
+                        <label>Đơn giá niêm yết *</label>
+                        <input type="text" id="editProdPrice" class="form-control-custom" required>
+                    </div>
+                    <div class="form-group-custom">
+                        <label>Số lượng tồn kho *</label>
+                        <input type="text" id="editProdStock" class="form-control-custom" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-secondary" onclick="closeModal('editProductModal')">Hủy</button>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Chỉnh Sửa Lịch Hẹn & Điều Phối Đổi Ca (Tờ Lịch Mini Khung Giờ Đồng Bộ 100%) -->
+<div id="changeAppointmentModal" class="portal-modal">
+    <div class="modal-content-card" style="max-width: 760px;">
+        <div class="modal-header-bar">
+            <h3 id="changeAppointmentModalTitle"><i class="fa-solid fa-calendar-check" style="color: var(--primary);"></i> Chỉnh Sửa Ca Trực & Đổi Lịch Hẹn</h3>
+            <button class="modal-close-btn" onclick="closeModal('changeAppointmentModal')">✕</button>
+        </div>
+        <form onsubmit="submitChangeAppointment(event)" style="display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
+            <input type="hidden" id="aptModalId">
+            <input type="hidden" id="aptNewTimeSlot">
+            
+            <div class="modal-body-scroll" style="flex: 1; overflow-y: auto; padding: 20px 24px;">
+                <!-- Thông tin ca bệnh hiện tại -->
+                <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase;">Mã ca hẹn: <strong id="aptModalCode">#BK-8821</strong></span>
+                        <span id="aptCurrentStatusBadge" class="badge-status badge-confirmed">Đang xử lý</span>
+                    </div>
+                    <h4 id="aptModalPatient" style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Ông Vũ Đình Phúc (80 tuổi)</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--text-muted);">
+                        <div><i class="fa-solid fa-user-nurse" style="color: var(--primary);"></i> ĐD hiện tại: <strong id="aptCurrentNurse" style="color: var(--text-main);">BS. Lê Hoàng Quân</strong></div>
+                        <div><i class="fa-regular fa-clock" style="color: var(--primary);"></i> Giờ hiện tại: <strong id="aptCurrentDate" style="color: var(--text-main);">08:00 - 10:30 (Sáng)</strong></div>
+                    </div>
+                </div>
+
+                <!-- 1. Chọn Ngày Hẹn & Chọn Điều Dưỡng Phụ Trách (Tích Hợp Ô Tìm Kiếm Đồng Bộ Bên Trong) -->
+                <div class="form-grid-2" style="margin-bottom: 16px; gap: 18px; align-items: stretch;">
+                    <!-- Cột Trái: Chọn Ngày -->
+                    <div class="form-group-custom" style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 700; margin-bottom: 6px; display: block;">
+                            <i class="fa-solid fa-calendar-day" style="color: var(--primary);"></i> Chọn Ngày Hẹn Mới *
+                        </label>
+                        <input type="date" id="aptNewDate" class="form-control-custom" value="2026-10-11" required onchange="handleModalDateOrNurseChange()" style="height: 40px; box-sizing: border-box; width: 100%;">
+                        <div style="margin-top: 10px; font-size: 12px; color: #475569; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 10px 12px; line-height: 1.45; flex: 1;">
+                            <div style="font-weight: 700; color: var(--primary); margin-bottom: 2px;"><i class="fa-solid fa-circle-check"></i> Tự động kiểm tra lịch trực</div>
+                            Khung giờ rảnh sẽ tự động đồng bộ theo ngày và điều dưỡng được chọn.
+                        </div>
+                    </div>
+
+                    <!-- Cột Phải: Chọn & Tìm Kiếm Điều Dưỡng Phụ Trách -->
+                    <div class="form-group-custom">
+                        <label style="font-weight: 700; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+                            <span><i class="fa-solid fa-user-doctor" style="color: var(--primary);"></i> Chọn Điều Dưỡng Phụ Trách *</span>
+                            <span style="font-size: 11.5px; color: var(--primary); font-weight: 600;"><i class="fa-solid fa-magnifying-glass"></i> Lọc theo tên</span>
+                        </label>
+                        <!-- Ô tìm kiếm điều dưỡng đồng bộ đặt ngay trong phần này -->
+                        <div class="search-input-box" style="position: relative; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
+                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #0284c7; font-size: 13px;"></i>
+                            <input type="text" id="nurseSearchInModal" class="form-control-custom" placeholder="Gõ tên tìm nhanh (Minh, Quân, Mai...)" oninput="filterNurseDropdownInModal(this.value)" style="padding-left: 36px; height: 38px; font-size: 13px; box-sizing: border-box; width: 100%; background: #ffffff;">
+                        </div>
+                        <!-- Danh sách chọn điều dưỡng -->
+                        <select id="aptNewNurse" class="form-control-custom" style="width: 100%; height: 40px; box-sizing: border-box; font-weight: 600; font-size: 13px; background: #ffffff;" required onchange="handleModalDateOrNurseChange()">
+                            <option value="minh">ĐD. Nguyễn Văn Minh (Hải Châu & Thanh Khê)</option>
+                            <option value="mai">ĐD. Trần Thị Mai (Hải Châu & Cẩm Lệ)</option>
+                            <option value="lan">ĐD. Trần Thị Lan (Hải Châu & Thanh Khê)</option>
+                            <option value="quan">BS. Lê Hoàng Quân (Sơn Trà & Ngũ Hành Sơn)</option>
+                            <option value="ha">ĐD. Phạm Thanh Hà (Liên Chiểu & Cẩm Lệ)</option>
+                            <option value="thao">ĐD. Hoàng Thu Thảo (Ngũ Hành Sơn & Sơn Trà)</option>
+                            <option value="bao">ĐD. Đặng Quốc Bảo (Cẩm Lệ & Hải Châu)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 2. Tờ lịch chọn khung giờ trống trực quan -->
+                <div class="form-group-custom" style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <label style="font-weight: 700; margin: 0;"><i class="fa-regular fa-clock" style="color: var(--primary);"></i> Chọn Khung Giờ Ca Trực Trên Tờ Lịch *</label>
+                        <span style="font-size: 11.5px; color: var(--text-muted); font-style: italic;">(Bấm vào ô khung giờ còn trống để chọn)</span>
+                    </div>
+                    <div id="modalSlotSelectionGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                        <!-- Generated dynamically by updateAvailableSlotsInModal -->
+                    </div>
+                </div>
+
+                <!-- 3. Lý do đổi lịch / Ghi chú điều phối -->
+                <div class="form-group-custom" style="margin-bottom: 4px;">
+                    <label style="font-weight: 700; margin-bottom: 6px; display: block;">
+                        <i class="fa-solid fa-note-sticky" style="color: var(--primary);"></i> Lý do điều chỉnh / Ghi chú cho Điều Dưỡng:
+                    </label>
+                    <textarea id="aptChangeReason" class="form-control-custom" rows="2" placeholder="Ví dụ: Người bệnh bận việc sáng, đổi sang chiều / Điều dưỡng xin đổi ca..." style="width: 100%; box-sizing: border-box; min-height: 56px; font-size: 13.5px; resize: vertical;"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer-bar" style="background: #ffffff; border-top: 1px solid var(--border-color); padding: 14px 24px;">
+                <button type="button" class="btn-secondary" onclick="closeModal('changeAppointmentModal')">Hủy bỏ</button>
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-rotate"></i> Xác Nhận & Đồng Bộ Lịch
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Popup: Tờ Lịch Ca Trực Của Điều Dưỡng (Chỉ dùng để tra cứu xem lịch trực) -->
+<div id="nurseScheduleModal" class="portal-modal">
+    <div class="modal-content-card" style="max-width: 800px;">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-calendar-days" style="color: var(--primary);"></i> Lịch Trực Ca Trong Ngày Của Điều Dưỡng</h3>
+            <button class="modal-close-btn" onclick="closeModal('nurseScheduleModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+            <!-- Header Tóm Tắt Điều Dưỡng Đang Xem -->
+            <div style="background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <img id="nsmAvatar" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300" alt="Avatar" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #0284c7;">
+                    <div>
+                        <div style="font-size: 11.5px; font-weight: 800; color: #0284c7; text-transform: uppercase;">Điều Dưỡng Phụ Trách:</div>
+                        <h4 id="nsmName" style="font-size: 17px; font-weight: 800; color: #0c4a6e; margin: 2px 0;">ĐD. Nguyễn Văn Minh</h4>
+                        <div id="nsmMeta" style="font-size: 12.5px; color: #0369a1; font-weight: 600;">Mã: DD-0824 • Hải Châu & Thanh Khê • 10 năm KN</div>
+                    </div>
+                </div>
+                <div id="nsmRatingBadge" style="display: flex; align-items: center; gap: 6px; background: #fff; padding: 6px 12px; border-radius: 20px; border: 1px solid #fed7aa; font-weight: 800; font-size: 13.5px; color: #d97706;">
+                    <span>4.9</span> <i class="fa-solid fa-star"></i>
+                </div>
+            </div>
+
+            <!-- Thanh điều khiển: Ô Lịch chọn ngày -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; background: #f8fafc; padding: 12px 16px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <label style="font-size: 13px; font-weight: 700; color: var(--text-main); white-space: nowrap;">
+                        <i class="fa-regular fa-calendar-days" style="color: var(--primary);"></i> Chọn ngày xem ca trực:
+                    </label>
+                    <input type="date" id="nurseModalScheduleDate" class="form-control-custom" style="padding: 4px 10px; font-weight: 700; width: 145px; background: #fff; border: 1.5px solid #cbd5e1; cursor: pointer;" value="2026-10-11" onchange="handleNurseModalDateChange(this.value)">
+                    <button type="button" class="btn-action-sm btn-outline-sm" onclick="setNurseModalQuickDate('today')">Hôm nay</button>
+                    <button type="button" class="btn-action-sm btn-outline-sm" onclick="setNurseModalQuickDate('tomorrow')">Ngày mai</button>
+                </div>
+                <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700;">
+                    <span><i class="fa-solid fa-circle" style="color: #10b981;"></i> Đang rảnh</span>
+                    <span><i class="fa-solid fa-circle" style="color: #ef4444;"></i> Đã có ca</span>
+                </div>
+            </div>
+
+            <!-- Tờ lịch 4 ca trực trong ngày -->
+            <div id="nurseModalScheduleGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px;">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+        <div class="modal-footer-bar">
+            <button type="button" class="btn-secondary" onclick="closeModal('nurseScheduleModal')">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Chi Tiết Hồ Sơ Điều Dưỡng (Đồng bộ chuẩn 100% với Hồ Sơ Điều Dưỡng bên Nurse Portal) -->
+<div id="nurseDetailProfileModal" class="portal-modal">
+    <div class="modal-content-card" style="max-width: 750px;">
+        <div class="modal-header-bar">
+            <h3><i class="fa-solid fa-id-card" style="color: var(--primary);"></i> Hồ Sơ Chi Tiết Điều Dưỡng Viên</h3>
+            <button class="modal-close-btn" onclick="closeModal('nurseDetailProfileModal')">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+            <!-- Header Tóm Tắt & Điểm Đánh Giá Sao -->
+            <div style="display: flex; gap: 18px; align-items: center; padding: 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+                <img id="ndAvatar" src="" alt="Avatar" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                        <h3 id="ndName" style="font-size: 18px; font-weight: 800; color: var(--text-main); margin: 0;">ĐD. Nguyễn Văn Minh</h3>
+                        <span id="ndStatusBadge" class="badge-status badge-completed"><i class="fa-solid fa-circle-check"></i> Đang hoạt động</span>
+                    </div>
+                    <p id="ndSpec" style="color: var(--primary); font-weight: 700; font-size: 13.5px; margin: 4px 0;">Chuyên Khoa Ngoại & Vết Thương Mổ</p>
+                    <div style="display: flex; align-items: center; gap: 12px; font-size: 13px; margin-top: 4px; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 4px; color: #f59e0b; font-weight: 800;">
+                            <span id="ndRatingNum">4.9</span> <i class="fa-solid fa-star"></i>
+                            <span id="ndReviewsCount" style="color: var(--text-muted); font-weight: 600; font-size: 12px;">(128 lượt khách đánh giá)</span>
+                        </div>
+                        <span style="color: #cbd5e1;">•</span>
+                        <span style="color: var(--text-muted); font-size: 12px; font-style: italic;">Đánh giá sao từ khách hàng (tự nguyện, không bắt buộc)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Thông Tin Chi Tiết (Khớp 100% hồ sơ bên nurse.html) -->
+            <div class="form-grid-2">
+                <div class="form-group-custom">
+                    <label>Họ và tên điều dưỡng</label>
+                    <input type="text" id="ndFullName" class="form-control-custom" readonly style="background: #f1f5f9; font-weight: 700;">
+                </div>
+                <div class="form-group-custom">
+                    <label>Mã nhân sự / ID</label>
+                    <input type="text" id="ndCode" class="form-control-custom" readonly style="background: #f1f5f9; font-weight: 800; color: var(--primary);">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group-custom">
+                    <label>Số điện thoại liên hệ</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="ndPhone" class="form-control-custom" readonly style="background: #f1f5f9; font-weight: 700;">
+                        <a id="ndPhoneCallBtn" href="tel:" class="btn-action-sm btn-outline-sm" style="display: flex; align-items: center; justify-content: center; padding: 0 14px;" title="Gọi điện">
+                            <i class="fa-solid fa-phone"></i> Gọi
+                        </a>
+                    </div>
+                </div>
+                <div class="form-group-custom">
+                    <label>Email cá nhân</label>
+                    <input type="text" id="ndEmail" class="form-control-custom" readonly style="background: #f1f5f9;">
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Địa chỉ thường trú</label>
+                <input type="text" id="ndAddress" class="form-control-custom" readonly style="background: #f1f5f9;">
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group-custom">
+                    <label>Khu vực ưu tiên nhận ca</label>
+                    <input type="text" id="ndDistrict" class="form-control-custom" readonly style="background: #f1f5f9; font-weight: 700; color: #0284c7;">
+                </div>
+                <div class="form-group-custom">
+                    <label>Số năm kinh nghiệm y tế</label>
+                    <input type="text" id="ndExpYears" class="form-control-custom" readonly style="background: #f1f5f9; font-weight: 700;">
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Bằng cấp & Chứng chỉ hành nghề</label>
+                <div id="ndCerts" style="background: #f1f5f9; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #1e293b;">
+                    Cử nhân Điều dưỡng ĐH Y Dược • CCHN số 004821/DNA-CCHN (Đã thẩm định)
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Tóm tắt năng lực & Kỹ thuật y khoa nổi bật</label>
+                <textarea id="ndSkills" class="form-control-custom" rows="3" readonly style="background: #f1f5f9; resize: none;"></textarea>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Phản hồi tiêu biểu từ thân nhân người bệnh</label>
+                <div id="ndTopReview" style="background: #fffbeb; border: 1px dashed #fcd34d; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #92400e; font-style: italic;">
+                    "Anh Minh làm rất mát tay, rửa vết thương không đau."
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer-bar">
+            <button type="button" class="btn-secondary" onclick="closeModal('nurseDetailProfileModal')">Đóng</button>
+            <button type="button" class="btn-primary" id="ndViewScheduleBtn">
+                <i class="fa-solid fa-calendar-days"></i> Xem ca trực của điều dưỡng này
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/data.js"></script>
+<script src="/js/portal.js"></script>
+<script src="/js/staff/staff.js"></script>
+</body>
+</html>

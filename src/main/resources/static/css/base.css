@@ -1,0 +1,21 @@
+/* =========================================================
+   1. BASE STYLES & RESET
+========================================================= */
+
+:root{--primary-blue:#0284c7;--primary-dark:#0369a1;--accent-green:#10b981;--danger-red:#ef4444;--warning-orange:#f97316;--bg-top:#f0f7ff;--bg-body:#f8fafc;--navy-dark:#0f172a;--text-dark:#1e293b;--text-muted:#64748b;--font-main:'Plus Jakarta Sans',sans-serif;--shadow-sm:0 2px 8px rgba(0,0,0,.04);--shadow-md:0 10px 30px -5px rgba(2,132,199,.08);--shadow-hover:0 20px 35px -10px rgba(2,132,199,.15)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-main);color:var(--text-dark);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,a,input,select{font-family:inherit}
+.container{max-width:1360px;width:92%;margin:0 auto;padding:0 16px}
+
+
+/* PAGES */
+.page-section{display:none}
+.page-section.page-active{display:block}
+
+
+.btn-primary{background:#0284c7}
+.btn-full{width:100%;padding:14px;font-size:15px}
+.btn-warning{background:linear-gradient(135deg,#eab308,#ca8a04)}
+

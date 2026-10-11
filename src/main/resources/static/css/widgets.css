@@ -1,0 +1,359 @@
+/* =========================================================
+   11. CỤM NÚT NỔI, CHATBOT AI BBAI & TOAST
+========================================================= */
+
+/* =========================================================
+   CỤM NÚT NỔI HỖ TRỢ / XE CẤP CỨU / AI BBAI DOCK (GÓC DƯỚI BÊN PHẢI)
+========================================================= */
+.floating-dock-widget {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: flex-end;
+}
+.dock-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 19px;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.24);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #0284c7;
+}
+.dock-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.32);
+}
+
+.dock-btn-phone {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+}
+.dock-btn-zalo {
+  background: #0068ff;
+  font-weight: 900;
+  font-size: 12px;
+}
+.dock-zalo-text {
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: -0.5px;
+}
+
+/* NÚT XE CẤP CỨU NỔI BẬT DƯỚI CÙNG */
+.dock-btn-emergency {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow: 0 4px 18px rgba(239,68,68,0.55);
+  font-size: 18px;
+}
+.dock-ping-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #ef4444;
+  animation: dockPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+@keyframes dockPing {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* NÚT AI BBAI */
+.dock-btn-bbai {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #7c3aed 100%);
+  box-shadow: 0 4px 18px rgba(37,99,235,0.45);
+  font-size: 20px;
+}
+.dock-online-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  background: #10b981;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+/* TOOLTIP TRƯỢT SANG TRÁI */
+.dock-tip {
+  position: absolute;
+  right: 58px;
+  background: #0f172a;
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.dock-tip::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 5px 0 5px 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #0f172a;
+}
+.dock-btn:hover .dock-tip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* CỬA SỔ CHAT BBAI */
+.bbai-chat-window {
+  position: fixed;
+  bottom: 82px;
+  right: 22px;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  height: 540px;
+  max-height: calc(100vh - 100px);
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.3);
+  border: 1px solid #e2e8f0;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeInDown 0.25s ease;
+  z-index: 10000;
+}
+.bbai-chat-window.open {
+  display: flex;
+}
+.bbai-chat-header {
+  background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
+  color: #fff;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bbai-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bbai-header-avatar {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.bbai-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+.bbai-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.bbai-ver {
+  font-size: 10px;
+  background: rgba(255,255,255,0.25);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.bbai-status {
+  font-size: 11px;
+  color: #bae6fd;
+}
+.bbai-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0.85;
+}
+.bbai-close-btn:hover { opacity: 1; }
+
+.bbai-chat-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bbai-msg {
+  display: flex;
+}
+.bbai-msg.user {
+  justify-content: flex-end;
+}
+.bbai-msg.bot {
+  justify-content: flex-start;
+}
+.bbai-bubble {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.bbai-msg.user .bbai-bubble {
+  background: #0284c7;
+  color: #fff;
+  border-bottom-right-radius: 3px;
+}
+.bbai-msg.bot .bbai-bubble {
+  background: #fff;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  border-bottom-left-radius: 3px;
+}
+
+.bbai-msg.typing .bbai-bubble {
+  display: flex;
+  gap: 4px;
+  padding: 10px 14px;
+}
+.bbai-msg.typing .dot {
+  width: 6px;
+  height: 6px;
+  background: #0284c7;
+  border-radius: 50%;
+  animation: typingBounce 1.2s infinite ease-in-out;
+}
+.bbai-msg.typing .dot:nth-child(2) { animation-delay: 0.2s; }
+.bbai-msg.typing .dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+}
+
+.bbai-quick-prompts {
+  display: flex;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #fff;
+  border-top: 1px solid #f1f5f9;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.bbai-quick-prompts::-webkit-scrollbar { height: 4px; }
+.bbai-chip {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.bbai-chip:hover {
+  background: #e0f2fe;
+  border-color: #38bdf8;
+  color: #0284c7;
+}
+
+.bbai-chat-input-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  gap: 8px;
+}
+.bbai-chat-input-row input {
+  flex: 1;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 13px;
+  outline: none;
+}
+.bbai-chat-input-row input:focus {
+  border-color: #0284c7;
+}
+.bbai-send-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #0284c7;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.bbai-send-btn:hover {
+  background: #0369a1;
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   TOAST NOTIFICATION
+========================================================= */
+.bbcare-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #0f172a;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10001;
+  pointer-events: none;
+}
+.bbcare-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.bbcare-toast i {
+  color: #10b981;
+  font-size: 16px;
+}
+
