@@ -177,7 +177,36 @@ git pull origin main
 
 ---
 
-## 🤖 PHẦN 4: BỘ PROMPT AI "COPY & PASTE" CHO TỪNG BẠN
+## 📸 PHẦN 4: QUY TẮC XỬ LÝ HÌNH ẢNH (SẢN PHẨM CỬA HÀNG & AVATAR ĐIỀU DƯỠNG)
+
+> **⚠️ NGUYÊN TẮC VÀNG CHO CẢ NHÓM:**  
+> **TUYỆT ĐỐI KHÔNG lưu file ảnh trực tiếp (dữ liệu nhị phân BLOB / byte[]) vào Database!**  
+> **LUÔN LUÔN: Chỉ lưu ĐƯỜNG DẪN / LINK (chuỗi `VARCHAR(500)`) vào Database.**
+
+### 1. Đối với các sản phẩm/thiết bị ĐÃ CÓ SẴN (Máy tạo oxy, Máy CPAP, Bình oxy 40L, Xe lăn...):
+- Trong frontend (`data.js`), mỗi sản phẩm đều đã có sẵn 1 link ảnh chất lượng cao (Unsplash).
+- **Cách xử lý:** Trong bảng `products`, cột `image_url` **lưu thẳng chính các đường link có sẵn này vào SQL Server**!
+  ```sql
+  INSERT INTO products (id, name, rent_price, buy_price, image_url)
+  VALUES ('p_oxy_machine', N'Máy Tạo Oxy (5L / 10L)', 350000, 12500000, 
+          'https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&q=80&w=600');
+  ```
+- **Lợi ích:** Cả nhóm **không cần phải tải từng file ảnh về máy**, không sợ nặng Git hay thiếu ảnh khi nộp bài.
+
+### 2. Đối với sản phẩm MỚI khi Staff/Admin tự tải ảnh lên (Upload file):
+- Khi Staff tạo thiết bị mới và chọn file từ máy tính:
+  1. Frontend gửi `MultipartFile` lên Spring Boot qua `POST /api/products/upload`.
+  2. Spring Boot lưu file vào thư mục máy tính: `./uploads/products/` (đổi tên theo `UUID` để không trùng file).
+  3. Database lưu chuỗi đường dẫn tương đối: `/uploads/products/uuid_ten_file.jpg`.
+  4. Spring Boot cấu hình `WebConfig.java` để cho phép truy cập:
+     ```java
+     registry.addResourceHandler("/uploads/**")
+             .addResourceLocations("file:uploads/");
+     ```
+
+---
+
+## 🤖 PHẦN 5: BỘ PROMPT AI "COPY & PASTE" CHO TỪNG BẠN
 
 Khi làm việc, mỗi bạn chỉ cần **copy nguyên văn câu prompt dưới đây dán cho AI** để AI sinh code chuẩn 100% không bị lệch cấu trúc:
 
