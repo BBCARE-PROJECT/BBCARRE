@@ -196,4 +196,31 @@ public class AppointmentApiController {
             ));
         }
     }
+
+    // Hủy ca hẹn (Khách hàng hoặc Staff hủy)
+    @PostMapping("/{id}/cancel")
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<?> cancelAppointment(
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, String> payload) {
+        try {
+            String reason = payload != null ? payload.get("reason") : "Khách hàng yêu cầu hủy";
+            Appointment updated = appointmentService.cancelAppointment(id, reason);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Đã hủy ca hẹn thành công!",
+                    "appointment", updated
+            ));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Đã xảy ra lỗi khi hủy ca: " + e.getMessage()
+            ));
+        }
+    }
 }
