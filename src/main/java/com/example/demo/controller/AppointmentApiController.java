@@ -65,6 +65,12 @@ public class AppointmentApiController {
         return appointmentService.getAppointmentsByNurseAndDate(nurseId, date);
     }
 
+    // Lấy lịch sử ca hẹn theo SĐT bệnh nhân (Dành cho màn hình 'HỒ SƠ ĐẶT CA' EHR)
+    @GetMapping({"/history", "/my-history", "/by-phone"})
+    public ResponseEntity<List<Appointment>> getAppointmentsByPhone(@RequestParam String phone) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByPatientPhone(phone));
+    }
+
     // API Phân công / Điều phối ca hẹn (Được gọi khi bấm "Xác Nhận & Đồng Bộ Lịch" trên staff.html)
     @PostMapping("/{id}/assign")
     public ResponseEntity<?> assignAppointment(
