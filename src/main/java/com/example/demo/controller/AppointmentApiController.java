@@ -223,4 +223,30 @@ public class AppointmentApiController {
             ));
         }
     }
+
+    // Cập nhật trạng thái ca hẹn
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> payload) {
+        try {
+            String status = payload.get("status");
+            Appointment updated = appointmentService.updateStatus(id, status);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Cập nhật trạng thái thành công!",
+                    "appointment", updated
+            ));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Đã xảy ra lỗi: " + e.getMessage()
+            ));
+        }
+    }
 }
