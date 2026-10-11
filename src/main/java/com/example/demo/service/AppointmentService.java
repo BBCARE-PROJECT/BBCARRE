@@ -1,72 +1,119 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Appointment;
-import com.example.demo.model.Nurse;
-import com.example.demo.repository.AppointmentRepository;
-import com.example.demo.repository.NurseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class AppointmentService {
+/**
+ * Interface nghiệp vụ quản lý ca hẹn & điều phối điều dưỡng tại nhà BBCare.
+ */
+public interface AppointmentService {
 
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+    // ==========================================
+    // 1. CÁC HÀM TRUY VẤN DỮ LIỆU (READ)
+    // ==========================================
 
-    @Autowired
-    private NurseRepository nurseRepository;
+    /**
+     * Lấy toàn bộ danh sách ca hẹn trong hệ thống.
+     */
+    List<Appointment> getAllAppointments();
 
-    // Lấy tất cả lịch hẹn
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
-    }
+    /**
+     * Tìm ca hẹn theo ID khóa chính.
+     */
+    Optional<Appointment> getAppointmentById(Long id);
 
-    // Lấy lịch hẹn theo ngày
-    public List<Appointment> getAppointmentsByDate(String date) {
-        return appointmentRepository.findByAppointmentDate(date);
-    }
+    /**
+     * Tìm ca hẹn theo ID, nếu không có ném ngoại lệ nghiệp vụ.
+     */
+    Appointment getAppointmentByIdOrThrow(Long id);
 
-    // Lấy lịch hẹn theo Điều dưỡng và Ngày (Dành cho Nurse Portal)
-    public List<Appointment> getAppointmentsByNurseAndDate(String nurseId, String date) {
-        return appointmentRepository.findByNurseIdAndAppointmentDate(nurseId, date);
-    }
+    /**
+     * Tìm ca hẹn theo mã ca (vd: '#BK-8821').
+     */
+    Optional<Appointment> getAppointmentByCode(String code);
 
-    // Kiểm tra trùng ca
-    public boolean isNurseBusy(String nurseId, String date, String timeSlot) {
-        return appointmentRepository.existsByNurseIdAndAppointmentDateAndTimeSlot(nurseId, date, timeSlot);
-    }
+    /**
+     * Lấy danh sách ca hẹn theo một ngày cụ thể (định dạng 'YYYY-MM-DD').
+     */
+    List<Appointment> getAppointmentsByDate(String date);
 
-    // Phân công / Điều phối ca hẹn cho Điều dưỡng
-    public Appointment assignOrUpdateAppointment(Long id, String nurseId, String newDate, String newSlot, String reason) {
-        Optional<Appointment> optApt = appointmentRepository.findById(id);
-        if (optApt.isEmpty()) {
-            throw new RuntimeException("Không tìm thấy ca hẹn với ID: " + id);
-        }
+    /**
+     * Lấy tất cả ca hẹn được phân công cho một Điều dưỡng.
+     */
+    List<Appointment> getAppointmentsByNurse(String nurseId);
 
-        Appointment apt = optApt.get();
+    /**
+     * Lấy ca hẹn của 1 Điều dưỡng trong 1 ngày cụ thể (Dành cho Nurse Portal xem lịch trực).
+     */
+    List<Appointment> getAppointmentsByNurseAndDate(String nurseId, String date);
 
-        // Kiểm tra xem điều dưỡng mới có bị trùng ca ở khung giờ đó không
-        if (nurseId != null && !nurseId.isEmpty() && !nurseId.equals("none")) {
-            boolean busy = appointmentRepository.existsByNurseIdAndAppointmentDateAndTimeSlot(nurseId, newDate, newSlot);
-            // Nếu trùng ca khác (không phải chính ca này)
-            if (busy && (!newSlot.equals(apt.getTimeSlot()) || !newDate.equals(apt.getAppointmentDate()) || apt.getNurse() == null || !nurseId.equals(apt.getNurse().getId()))) {
-                throw new RuntimeException("Điều dưỡng đã có ca trực vào khung giờ này!");
-            }
+    /**
+     * Lấy lịch sử ca hẹn theo số điện thoại bệnh nhân (Dành cho Hồ sơ đặt ca EHR của khách).
+     */
+    List<Appointment> getAppointmentsByPatientPhone(String phone);
 
-            Optional<Nurse> optNurse = nurseRepository.findById(nurseId);
-            optNurse.ifPresent(apt::setNurse);
-        }
+    /**
+     * Lọc ca hẹn theo trạng thái ('pending', 'confirmed', 'completed', 'cancelled').
+     */
+    List<Appointment> getAppointmentsByStatus(String status);
 
-        apt.setAppointmentDate(newDate);
-        apt.setTimeSlot(newSlot);
-        if (reason != null && !reason.trim().isEmpty()) {
-            apt.setReason(reason);
-        }
-        apt.setStatus("confirmed");
 
-        return appointmentRepository.save(apt);
-    }
+    // ==========================================
+    // 2. NGHIỆP VỤ KIỂM TRA TRÙNG LỊCH (CONFLICT CHECK)
+    // ==========================================
+
+    /**
+     * Kiểm tra điều dưỡng đã có ca vào ngày và khung giờ đó hay chưa.
+     */
+    boolean isNurseBusy(String nurseId, String date, String timeSlot);
+
+    /**
+     * Kiểm tra điều dưỡng có bị trùng ca hay không (loại trừ chính ca đang được cập nhật).
+     */
+    boolean isNurseBusyExcludingAppointment(String nurseId, String date, String timeSlot, Long excludeAppointmentId);
+
+
+    // ==========================================
+    // 3. NGHIỆP VỤ THAO TÁC CA HẸN (WRITE)
+    // ==========================================
+
+    /**
+     * Khách hàng đặt ca mới hoặc Staff tạo ca mới.
+     * Tự động sinh mã ca, gán trạng thái 'pending', validate thông tin bắt buộc.
+     */
+    Appointment createAppointment(Appointment appointment);
+
+    /**
+     * Staff phân công / điều phối ca trực cho Điều dưỡng.
+     * Kiểm tra trùng lịch, cập nhật trạng thái 'confirmed', lưu lý do điều phối.
+     */
+    Appointment assignOrUpdateAppointment(Long id, String nurseId, String newDate, String newSlot, String reason);
+
+    /**
+     * Điều dưỡng cập nhật chỉ số sinh hiệu (Huyết áp, SpO2, Nhịp tim, Nhật ký chăm sóc).
+     * Dữ liệu đồng bộ sang Hồ sơ bệnh án điện tử EHR của khách.
+     */
+    Appointment updateVitals(Long id, String bloodPressure, String spo2, String heartRate, String nurseNotes);
+
+    /**
+     * Hoàn thành ca trực: Điều dưỡng cập nhật sinh hiệu và chuyển trạng thái ca sang 'completed'.
+     */
+    Appointment completeAppointment(Long id, String bloodPressure, String spo2, String heartRate, String nurseNotes);
+
+    /**
+     * Hủy ca hẹn (kèm lý do hủy), chuyển trạng thái sang 'cancelled'.
+     */
+    Appointment cancelAppointment(Long id, String reason);
+
+    /**
+     * Cập nhật trạng thái ca hẹn ('pending', 'confirmed', 'completed', 'cancelled').
+     */
+    Appointment updateStatus(Long id, String status);
+
+    /**
+     * Xóa ca hẹn khỏi cơ sở dữ liệu.
+     */
+    void deleteAppointment(Long id);
 }
