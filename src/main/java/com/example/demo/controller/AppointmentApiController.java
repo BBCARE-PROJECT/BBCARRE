@@ -88,6 +88,29 @@ public class AppointmentApiController {
         ));
     }
 
+    // Đặt ca mới / Tạo ca hẹn (Khách đặt từ Wizard 5 bước hoặc Staff tạo mới)
+    @PostMapping({"", "/book"})
+    public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment) {
+        try {
+            Appointment created = appointmentService.createAppointment(appointment);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                    "status", "success",
+                    "message", "Đặt ca hẹn thành công!",
+                    "appointment", created
+            ));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Đã xảy ra lỗi khi tạo ca hẹn: " + e.getMessage()
+            ));
+        }
+    }
+
     // API Phân công / Điều phối ca hẹn (Được gọi khi bấm "Xác Nhận & Đồng Bộ Lịch" trên staff.html)
     @PostMapping("/{id}/assign")
     public ResponseEntity<?> assignAppointment(
