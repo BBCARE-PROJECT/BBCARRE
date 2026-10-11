@@ -135,4 +135,35 @@ public class AppointmentApiController {
             ));
         }
     }
+
+    // Cập nhật chỉ số sinh hiệu khám bệnh (Điều dưỡng cập nhật sổ EHR)
+    @PostMapping({"/{id}/vitals", "/{id}/update-vitals"})
+    @PutMapping("/{id}/vitals")
+    public ResponseEntity<?> updateVitals(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> payload) {
+        try {
+            String bloodPressure = payload.get("bloodPressure");
+            String spo2 = payload.get("spo2");
+            String heartRate = payload.get("heartRate");
+            String nurseNotes = payload.get("nurseNotes");
+
+            Appointment updated = appointmentService.updateVitals(id, bloodPressure, spo2, heartRate, nurseNotes);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Đã cập nhật chỉ số sinh hiệu thành công!",
+                    "appointment", updated
+            ));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Đã xảy ra lỗi: " + e.getMessage()
+            ));
+        }
+    }
 }
