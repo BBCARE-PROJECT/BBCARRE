@@ -90,7 +90,9 @@ git pull origin main
 | `POST` | `/api/appointments/{id}/assign` | **Gán ĐD / Đổi ca trực (Nút Xác nhận & Đồng bộ)** | JSON: `{"nurseId": "quan", "newDate": "2026-10-11", "newSlot": "14:00 - 16:30 (Chiều)", "reason": "Đổi ca"}` |
 | `GET` | `/api/appointments/check-conflict` | Kiểm tra ĐD có bận giờ đó không | `?nurseId=quan&date=2026-10-11&slot=...` |
 
-* **Cách kết nối Javascript trên `staff.html`:**
+| `GET` | `/api/appointments/by-patient` | **Lấy lịch sử ca khám cho Header "HỒ SƠ ĐẶT CA"** | `?phone=0905123456` hoặc lấy tất cả ca |
+
+* **Cách kết nối Javascript trên `staff.html` (Điều phối đổi ca):**
   Tìm hàm `submitChangeAppointment(event)` trong `portal.js` và thay đoạn cập nhật mảng ảo bằng lệnh `fetch`:
   ```javascript
   // Gửi dữ liệu điều phối ca trực xuống Spring Boot:
@@ -110,6 +112,18 @@ git pull origin main
       closeModal('changeAppointmentModal');
       loadAppointmentsList(); // Load lại bảng
   });
+  ```
+
+* **Cách kết nối Javascript trên `trang-chu.html` (Header "HỒ SƠ ĐẶT CA"):**
+  Trong `user/app.js`, hàm `renderProfilePage()` sẽ gọi API để hiển thị lịch ca đã đặt:
+  ```javascript
+  // Lấy dữ liệu từ Database hiển thị lên tờ lịch của Khách hàng:
+  fetch('/api/appointments')
+      .then(res => res.json())
+      .then(appointments => {
+          APPOINTMENTS_HISTORY = appointments; // Cập nhật mảng lịch sử từ DB thật
+          renderProfileScheduleMatrix();      // Vẽ tờ lịch cho khách xem
+      });
   ```
 
 ---
@@ -145,6 +159,21 @@ git pull origin main
           });
   }
   ```
+
+---
+
+### 🅲️ MỞ RỘNG: MUA BÁN & THUÊ THIẾT BỊ Y TẾ (NẾU NHÓM LÀM THÊM)
+* **Giao diện liên quan:** 
+  - Khách hàng: `trang-chu.html` -> Mục Cửa hàng (`storePage`), Giỏ hàng (`cartPage`)
+  - Staff: `staff.html` -> Tab "Kho thuốc & Thiết bị", "Mua, Thuê thiết bị", "Nghiệm thu trả cọc"
+
+* **Các Entity cần thêm (Nếu nhóm làm):**
+  1. `model/Product.java`: id, name, category ('RENTAL', 'SALE', 'SUPPLEMENT'), rentPrice, buyPrice, imageUrl, stockQuantity.
+  2. `model/EquipmentRental.java`: id, clientName, clientPhone, productName, depositAmount, rentDate, returnDate, status ('RENTING', 'RETURNED_REFUNDED').
+
+* **API trọng tâm:**
+  - `GET /api/products`: Lấy danh sách thiết bị y tế đổ lên Cửa hàng & Kho staff.
+  - `POST /api/rentals/{id}/return`: Staff nghiệm thu thiết bị và hoàn tiền cọc cho khách.
 
 ---
 
