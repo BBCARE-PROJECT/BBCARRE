@@ -166,4 +166,34 @@ public class AppointmentApiController {
             ));
         }
     }
+
+    // Hoàn thành ca trực (Điều dưỡng hoàn tất khám & cập nhật sinh hiệu)
+    @PostMapping("/{id}/complete")
+    public ResponseEntity<?> completeAppointment(
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, String> payload) {
+        try {
+            String bloodPressure = payload != null ? payload.get("bloodPressure") : null;
+            String spo2 = payload != null ? payload.get("spo2") : null;
+            String heartRate = payload != null ? payload.get("heartRate") : null;
+            String nurseNotes = payload != null ? payload.get("nurseNotes") : null;
+
+            Appointment updated = appointmentService.completeAppointment(id, bloodPressure, spo2, heartRate, nurseNotes);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Đã hoàn thành ca khám và đồng bộ hồ sơ EHR!",
+                    "appointment", updated
+            ));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", "error",
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "error",
+                    "message", "Đã xảy ra lỗi khi hoàn thành ca: " + e.getMessage()
+            ));
+        }
+    }
 }
