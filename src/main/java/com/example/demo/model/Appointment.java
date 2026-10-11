@@ -37,12 +37,25 @@ public class Appointment {
     private String timeSlot; // Khung giờ: '08:00 - 10:30 (Sáng)', '14:00 - 16:30 (Chiều)'
 
     @Column(nullable = false, length = 30)
-    private String status; // Trạng thái: 'pending' (chờ gán), 'confirmed' (đã gán), 'completed' (hoàn thành)
+    private String status; // Trạng thái: 'pending', 'confirmed', 'completed', 'cancelled'
 
     @Column(length = 500)
-    private String reason; // Lý do điều phối / ghi chú đổi ca
+    private String reason; // Ghi chú đặt ca / Lý do điều phối
 
     private Double price; // Giá tiền ca khám
+
+    // 📋 CÁC TRƯỜNG KẾT QUẢ KHÁM (Dành cho Điều Dưỡng cập nhật & Đồng bộ sang HỒ SƠ ĐẶT CA EHR)
+    @Column(length = 50)
+    private String bloodPressure; // Huyết áp: vd '120/80 mmHg'
+
+    @Column(length = 30)
+    private String spo2; // Nồng độ oxy trong máu: vd '98%'
+
+    @Column(length = 30)
+    private String heartRate; // Nhịp tim: vd '78 bpm'
+
+    @Column(length = 500)
+    private String nurseNotes; // Nhật ký chăm sóc / Lời dặn của điều dưỡng
 
     public Appointment() {
     }
@@ -97,4 +110,16 @@ public class Appointment {
 
     public Double getPrice() { return price; }
     public void setPrice(Double price) { this.price = price; }
+
+    public String getBloodPressure() { return bloodPressure; }
+    public void setBloodPressure(String bloodPressure) { this.bloodPressure = bloodPressure; }
+
+    public String getSpo2() { return spo2; }
+    public void setSpo2(String spo2) { this.spo2 = spo2; }
+
+    public String getHeartRate() { return heartRate; }
+    public void setHeartRate(String heartRate) { this.heartRate = heartRate; }
+
+    public String getNurseNotes() { return nurseNotes; }
+    public void setNurseNotes(String nurseNotes) { this.nurseNotes = nurseNotes; }
 }
