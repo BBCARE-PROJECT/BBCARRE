@@ -122,4 +122,11 @@ public class Appointment {
 
     public String getNurseNotes() { return nurseNotes; }
     public void setNurseNotes(String nurseNotes) { this.nurseNotes = nurseNotes; }
+
+    // 👉 Alias getters & setters cho tương thích với Frontend và đề bài (notes & nurseCareNotes)
+    public String getNotes() { return this.reason; }
+    public void setNotes(String notes) { this.reason = notes; }
+
+    public String getNurseCareNotes() { return this.nurseNotes; }
+    public void setNurseCareNotes(String nurseCareNotes) { this.nurseNotes = nurseCareNotes; }
 }
