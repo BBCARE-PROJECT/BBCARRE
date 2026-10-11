@@ -504,9 +504,110 @@ function selectProfDate(dateStr) {
   renderProfilePage();
 }
 
-function renderProfilePage(){
+let isFetchingHistory = false;
+
+// 🚀 FETCH API: Tải lịch sử ca hẹn và nhật ký sinh hiệu từ Backend SQL Server (GET /api/appointments/my-history)
+function loadPatientAppointmentHistory(phone) {
+  let userPhone = phone;
+  if (!userPhone && typeof localStorage !== 'undefined') {
+    userPhone = localStorage.getItem('bbcare_user_phone');
+  }
+  if (!userPhone && typeof currentUser !== 'undefined' && currentUser) {
+    userPhone = currentUser.phone;
+  }
+  if (!userPhone) {
+    userPhone = '0905 123 456';
+  }
+
+  return fetch(`/api/appointments/my-history?phone=${encodeURIComponent(userPhone)}`)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        console.log('>> [Backend API] Đã tải danh sách ca hẹn & sinh hiệu từ Database SQL Server:', data);
+        let hasChanges = false;
+        data.forEach(srv => {
+          const vitalsObj = (srv.bloodPressure || srv.spo2 || srv.heartRate || srv.nurseNotes) ? {
+            bp: srv.bloodPressure || '--',
+            bloodPressure: srv.bloodPressure || '--',
+            spo2: srv.spo2 ? (srv.spo2.includes('%') ? srv.spo2 : srv.spo2 + '%') : '--',
+            hr: srv.heartRate ? (srv.heartRate.includes('bpm') ? srv.heartRate : srv.heartRate + ' bpm') : '--',
+            heartRate: srv.heartRate || '--',
+            temp: '36.8°C',
+            note: srv.nurseNotes || srv.nurseCareNotes || srv.reason || '',
+            measuredAt: `${srv.appointmentDate} (${srv.timeSlot})`,
+            bpStatus: 'Bình thường'
+          } : null;
+
+          const existing = APPOINTMENTS_HISTORY.find(x => x.code === srv.code || (srv.id && x.id === srv.id));
+          if (existing) {
+            existing.status = (srv.status || existing.status).toUpperCase();
+            existing.statusText = existing.status === 'COMPLETED' ? 'Đã hoàn thành' : (existing.status === 'CONFIRMED' ? 'Đã xếp lịch · Y tá nhận ca' : 'Chờ điều phối');
+            if (vitalsObj) existing.vitals = vitalsObj;
+            hasChanges = true;
+          } else {
+            const shiftDuration = srv.timeSlot || '08:00 - 10:30 (Sáng)';
+            const newAppt = {
+              id: srv.id,
+              code: srv.code,
+              patientName: srv.patientName || 'Bệnh nhân',
+              service: srv.serviceName || 'Chăm sóc y tế tại nhà',
+              nurseName: srv.nurse ? srv.nurse.fullName : 'Điều dưỡng hệ thống',
+              nurseTitle: srv.nurse ? (srv.nurse.specialty || 'Điều dưỡng chuyên khoa') : 'Điều dưỡng tại nhà',
+              nursePhone: srv.nurse ? (srv.nurse.phone || '0905 111 222') : '0905 111 222',
+              duration: shiftDuration,
+              time: `${srv.appointmentDate} (${shiftDuration})`,
+              dateStr: srv.appointmentDate,
+              timeRange: shiftDuration,
+              addr: srv.patientAddress || 'Đà Nẵng',
+              notes: srv.reason || '',
+              status: (srv.status || 'PENDING').toUpperCase(),
+              statusText: srv.status === 'completed' ? 'Đã hoàn thành' : (srv.status === 'confirmed' ? 'Đã xếp lịch · Y tá nhận ca' : 'Chờ điều phối'),
+              amount: srv.price || 300000,
+              rating: 0,
+              totalDays: 1,
+              scheduleDays: [
+                {
+                  dayIndex: 1,
+                  date: srv.appointmentDate,
+                  label: `${srv.appointmentDate} (${shiftDuration})`,
+                  status: (srv.status || 'PENDING').toUpperCase(),
+                  statusText: srv.status === 'completed' ? 'Đã hoàn thành' : 'Sắp trực',
+                  vitals: vitalsObj
+                }
+              ],
+              vitals: vitalsObj
+            };
+            APPOINTMENTS_HISTORY.unshift(newAppt);
+            hasChanges = true;
+          }
+        });
+
+        if (hasChanges) {
+          if (typeof saveStoredAppointments === 'function') {
+            saveStoredAppointments();
+          }
+          renderProfilePage(true);
+        }
+      }
+    })
+    .catch(err => {
+      console.warn('>> [Fetch API Warning] Không thể tải dữ liệu từ /api/appointments/my-history:', err);
+    });
+}
+
+function renderProfilePage(skipFetch){
   const area = $('profileScheduleArea');
   if(!area || typeof APPOINTMENTS_HISTORY === 'undefined') return;
+
+  if (!skipFetch && !isFetchingHistory) {
+    isFetchingHistory = true;
+    loadPatientAppointmentHistory().finally(() => {
+      setTimeout(() => { isFetchingHistory = false; }, 2000);
+    });
+  }
 
   const pad = n => String(n).padStart(2, '0');
   const safeDmy = s => (typeof dmy === 'function' ? dmy(s) : (s ? s.split('-').reverse().join('/') : ''));
@@ -1750,4 +1851,5 @@ if (typeof window !== 'undefined') {
   window.setFeedbackRating = setFeedbackRating;
   window.handleCustomerFeedbackSubmit = handleCustomerFeedbackSubmit;
   window.renderCustomerFeedbacks = renderCustomerFeedbacks;
+  window.loadPatientAppointmentHistory = loadPatientAppointmentHistory;
 }
