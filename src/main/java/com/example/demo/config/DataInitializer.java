@@ -2,8 +2,11 @@ package com.example.demo.config;
 
 import com.example.demo.model.Appointment;
 import com.example.demo.model.Nurse;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.NurseRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -19,8 +22,19 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void run(String... args) throws Exception {
+        // Tự động khởi tạo tài khoản User (Role.NURSE) cho 7 điều dưỡng nếu chưa có
+        createNurseUserIfNotExists("minh.nguyen@bbcare.vn", "BBCare@2026", "ĐD. Nguyễn Văn Minh", "0905111222");
+        createNurseUserIfNotExists("mai.tran@bbcare.vn", "BBCare@2026", "ĐD. Trần Thị Mai", "0905222333");
+        createNurseUserIfNotExists("lan.tran@bbcare.vn", "BBCare@2026", "ĐD. Trần Thị Lan", "0905333444");
+        createNurseUserIfNotExists("quan.le@bbcare.vn", "BBCare@2026", "BS. Lê Hoàng Quân", "0905444555");
+        createNurseUserIfNotExists("ha.pham@bbcare.vn", "BBCare@2026", "ĐD. Phạm Thanh Hà", "0905555666");
+        createNurseUserIfNotExists("thao.hoang@bbcare.vn", "BBCare@2026", "ĐD. Hoàng Thu Thảo", "0905666777");
+        createNurseUserIfNotExists("bao.dang@bbcare.vn", "BBCare@2026", "ĐD. Đặng Quốc Bảo", "0905777888");
         // Tự động khởi tạo 7 điều dưỡng mẫu nếu Database SQL Server chưa có dữ liệu
         if (nurseRepository.count() == 0) {
             Nurse n1 = new Nurse("minh", "DD01", "ĐD. Nguyễn Văn Minh", "Chuyên Khoa Ngoại & Vết Thương Mổ", "Hải Châu & Thanh Khê", "0905 111 222", "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=300", 4.9, 128, "ACTIVE");
@@ -48,4 +62,19 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println(">> Đã tự động tạo dữ liệu mẫu cho các Ca hẹn vào SQL Server!");
         }
     }
+
+    private void createNurseUserIfNotExists(String email, String password, String fullName, String phone) {
+        if (!userRepository.existsByEmail(email)) {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setFullName(fullName);
+            user.setPhone(phone);
+            user.setRole(Role.NURSE);
+            user.setIsVerified(true);
+            userRepository.save(user);
+            System.out.println(">> Đã tạo tài khoản điều dưỡng mặc định: " + email);
+        }
+    }
 }
+
